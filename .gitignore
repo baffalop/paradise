@@ -1,4 +1,5 @@
-platforms/
-node_modules/
-plugins/
 .idea/
+platforms/
+plugins/
+node_modules/
+www/js/index.js
