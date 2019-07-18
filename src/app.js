@@ -1,3 +1,5 @@
+import { audio as audioData } from 'data'
+
 class App {
   listen () {
     document.addEventListener('deviceready', this.init.bind(this));
@@ -10,6 +12,10 @@ class App {
 
     listeningElement.setAttribute('style', 'display:none;')
     receivedElement.setAttribute('style', 'display:block;')
+
+    for (const file of audioData.files) {
+      console.log(file.path)
+    }
   }
 }
 
