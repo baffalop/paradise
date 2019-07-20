@@ -7,7 +7,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "npm run webpack",
-        "webpack": "webpack -d --watch"
+        "webpack": "webpack -d --watch",
+        "webpackhelp": "webpack"
     },
     "keywords": [
         "ecosystem:cordova"
@@ -28,6 +29,7 @@
         }
     },
     "devDependencies": {
-        "webpack": "^4.35.3"
+        "webpack": "^4.35.3",
+        "webpack-cli": "^3.3.6"
     }
 }
