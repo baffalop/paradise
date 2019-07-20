@@ -6,9 +6,9 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "npm run webpack",
-        "webpack": "webpack -d --watch",
-        "webpackhelp": "webpack"
+        "start": "npm run watch",
+        "watch": "webpack -d --watch",
+        "build": "webpack"
     },
     "keywords": [
         "ecosystem:cordova"
