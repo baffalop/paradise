@@ -1,9 +1,13 @@
+const path = require('path')
+
 module.exports = {
-  entry: './src/paradise.js',
+  entry: path.resolve(__dirname, 'src/paradise.js'),
   output: {
-    filename: './www/js/index.js',
+    path: path.resolve(__dirname, 'www/js'),
+    filename: 'index.js',
   },
   resolve: {
-    modules: ['./src', './node_modules']
-  }
+    modules: [path.resolve(__dirname, 'src'), 'node_modules']
+  },
+  mode: 'production',
 }
