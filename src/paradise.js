@@ -1,6 +1,6 @@
 import { audio as audioData } from 'data'
 
-class App {
+class Paradise {
   listen () {
     document.addEventListener('deviceready', this.init.bind(this));
   }
@@ -19,4 +19,4 @@ class App {
   }
 }
 
-(new App()).listen()
+(new Paradise()).listen()

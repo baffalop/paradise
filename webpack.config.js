@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './src/app.js',
+  entry: './src/paradise.js',
   output: {
     filename: './www/js/index.js',
   },
