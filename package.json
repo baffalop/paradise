@@ -21,7 +21,8 @@
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-media": "^5.0.3",
     "cordova-plugin-splashscreen": "^5.0.3",
-    "media": "^0.2.1"
+    "media": "^0.2.1",
+    "swipejs": "^2.2.14"
   },
   "cordova": {
     "plugins": {
