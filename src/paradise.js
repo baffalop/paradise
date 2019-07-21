@@ -18,3 +18,5 @@ class Paradise {
     }
   }
 }
+
+(new Paradise()).listen()
