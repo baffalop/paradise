@@ -14,8 +14,8 @@ class Paradise {
   }
 
   init () {
-    for (const file of audioData.files) {
-      console.log(file.path)
+    for (const block of audioData.blocks) {
+      console.log(block.src)
     }
   }
 }

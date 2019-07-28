@@ -1,14 +1,10 @@
+import Block from 'block'
+
 const audio = {
   basePath: '../www/audio/',
-  files: [
-    {
-      path: 'intro.mp3',
-      tail: 1.1,
-    },
-    {
-      path: 'ficus.mp3',
-      tail: 9.0,
-    },
+  blocks: [
+    new Block('intro.mp3', 1.1),
+    new Block('ficus.mp3', 9.0),
   ]
 }
 
