@@ -5,4 +5,4 @@ const Block = class {
   }
 }
 
-export { Block }
+export default Block
