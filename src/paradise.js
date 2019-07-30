@@ -1,5 +1,6 @@
 import { audio as audioData } from 'data'
 import Swipe from 'swipejs'
+import Player from 'player'
 
 class Paradise {
   listen () {
@@ -14,9 +15,8 @@ class Paradise {
   }
 
   init () {
-    for (const block of audioData.blocks) {
-      console.log(block.src)
-    }
+    Block.basePath = audioData.basePath
+    this.player = new Player(audioData.blocks)
   }
 }
 
