@@ -9,8 +9,8 @@ const Block = class {
   }
 
   start (
-    next = () => console.log(`${this.src}: NEXT`),
-    ended = () => console.log(`${this.src}: ENDED`)
+    next,
+    ended
   ) {
     this.next = next
     this.ended = ended
