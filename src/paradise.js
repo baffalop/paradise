@@ -15,7 +15,8 @@ class Paradise {
   }
 
   init () {
-    Block.basePath = audioData.basePath
+    window.setTimeout(() => this.swipe.next(), 2000)
+
     this.player = new Player(audioData.blocks)
 
     document.getElementsByClassName('playpause')[0]
