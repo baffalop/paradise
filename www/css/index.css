@@ -40,16 +40,12 @@ body {
 }
 
 .title {
-    background: url(../dummy/img/title.png) no-repeat center center;
-    background-size: contain;
-    max-height: 300px;
-    /*position: relative;*/
+    max-width: 60%;
+    padding: 10% 10%;
 }
 
 /* player controls */
 .controls {
-    position: relative;
-    float: top;
     width: 500px;
     height: 250px;
     display: flex;
@@ -63,7 +59,7 @@ body {
     height: 100px;
     width: 100px;
     background: transparent;
-    background-size: 100% auto; /* image resized to div size */
+    background-size: 100% auto;
     background-repeat: no-repeat;
 }
 
