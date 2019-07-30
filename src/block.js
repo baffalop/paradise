@@ -21,8 +21,7 @@ const Block = class {
         console.log(`${this.src}: initialised`)
       },
       e => {
-        console.log(`${this.src}: error`)
-        console.log(e)
+        console.log(`${this.src}: error: ${e.message}`)
       },
       this.statusUpdate.bind(this)
     )
@@ -55,21 +54,30 @@ const Block = class {
         break
       case Media.MEDIA_RUNNING:
         status = 'RUNNING'
-        this.media.getCurrentPosition(this.timeUpdate.bind(this))
+        this.interval = window.setInterval(
+          () => this.media.getCurrentPosition(this.timeUpdate.bind(this)),
+          100
+        )
+        break
+      case Media.MEDIA_PAUSED:
+        status = 'PAUSED'
+        window.clearInterval(this.interval)
         break
       case Media.MEDIA_STOPPED:
         status = 'STOPPED'
+        window.clearInterval(this.interval)
         this.media.release()
         this.ended()
         break
     }
-    console.log(`${this.src}: status ${code}`)
+    console.log(`${this.src}: status ${status}`)
   }
 
   timeUpdate (pos) {
     console.log(`${this.src}: position ${pos}`)
-    if (pos >= this.media.getDuration() - this.tail) {
+    if (this.next && pos >= this.media.getDuration() - this.tail) {
       this.next()
+      this.next = null
     }
   }
 }
