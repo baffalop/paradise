@@ -26,8 +26,6 @@ const Block = class {
       },
       this.statusUpdate.bind(this)
     )
-
-    this.play()
   }
 
   play () {
