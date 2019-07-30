@@ -17,6 +17,20 @@ class Paradise {
   init () {
     Block.basePath = audioData.basePath
     this.player = new Player(audioData.blocks)
+
+    document.getElementsByClassName('playpause')[0]
+      .addEventListener('click', e => {
+        const elem = e.target
+        if (elem.classList.contains('play')) {
+          this.player.play()
+          elem.classList.remove('play')
+          elem.classList.add('pause')
+        } else if (elem.classList.contains('pause')) {
+          this.player.pause()
+          elem.classList.remove('pause')
+          elem.classList.add('play')
+        }
+      })
   }
 }
 
