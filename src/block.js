@@ -36,6 +36,14 @@ const Block = class {
     this.media.play()
   }
 
+  pause () {
+    if (!this.media) {
+      throw new Error('Media not started')
+    }
+
+    this.media.pause()
+  }
+
   statusUpdate (code) {
     let status = '-'
     switch (code) {
