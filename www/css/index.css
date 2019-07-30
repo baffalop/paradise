@@ -80,9 +80,29 @@ body {
 }
 
 .controlButton.playpause {
-    background-image: url(../dummy/img/play.png);
+    background-image: url(../dummy/img/play-pause-wait.png);
     width: 180px;
     background-size: 100% auto;
+}
+
+.playpause.play {
+    background-position: 50% 0px;
+}
+
+.playpause.pause {
+    background-position: 50% -100px;
+}
+
+.playpause.wait {
+    background-position: 50% -200px;
+    cursor: default;
+    animation: throb 2.3s infinite;
+}
+
+@keyframes throb {
+    0%   { opacity: 1.0; }
+    50%  { opacity: 0.0; }
+    100% { opacity: 1.0; }
 }
 
 /* Portrait layout (default) */
