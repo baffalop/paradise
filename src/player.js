@@ -14,7 +14,7 @@ class Player {
     const next = this.seq.pop()
 
     if (this.seq.length === 0) {
-      next.start(undefined, this.ended.bind(this))
+      next.start(null, this.ended.bind(this))
     } else {
       next.start(() => this.getNext().play(), () => this.cur.delete(next))
     }
