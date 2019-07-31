@@ -12,13 +12,7 @@ class Player {
 
   getNext () {
     const next = this.seq.pop()
-
-    if (this.seq.length === 0) {
-      next.start(this, null, this.ended.bind(this))
-    } else {
-      next.start(this, () => this.getNext().play(), () => this.playQueue.shift())
-    }
-
+    next.start(this)
     this.playQueue.push(next)
     return next
   }
@@ -31,8 +25,14 @@ class Player {
     this.playQueue.map(block => block.pause())
   }
 
+  blockEnd () {
+    this.playQueue.shift()
+    if (this.playQueue.length === 0) {
+      this.ended()
+    }
+  }
+
   ended () {
-    this.playQueue = []
     console.log('The whole sequence has ended')
   }
 
@@ -43,6 +43,12 @@ class Player {
    */
   receive (type, emitter, data) {
     switch (type) {
+      case 'tail':
+        this.getNext().play()
+        break
+      case 'end':
+        this.blockEnd()
+        break
     }
 
     this.emit(type, emitter, data)

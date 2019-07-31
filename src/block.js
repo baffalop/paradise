@@ -5,13 +5,12 @@ const Block = class {
    */
   constructor (src, tail) {
     this.src = src
-    this.tail = tail
+    this.tailPos = tail
+    this.tailReached = false
   }
 
-  start (upstream, next, ended) {
+  start (upstream) {
     this.upstream = upstream
-    this.next = next
-    this.ended = ended
 
     this.media = new Media(
       this.basePath + this.src,
@@ -52,10 +51,7 @@ const Block = class {
         break
       case Media.MEDIA_RUNNING:
         status = 'RUNNING'
-        this.interval = window.setInterval(
-          () => this.media.getCurrentPosition(this.timeUpdate.bind(this)),
-          100
-        )
+        this.watchTime()
         break
       case Media.MEDIA_PAUSED:
         status = 'PAUSED'
@@ -65,17 +61,24 @@ const Block = class {
         status = 'STOPPED'
         window.clearInterval(this.interval)
         this.media.release()
-        this.ended()
+        this.emit('end')
         break
     }
     console.log(`${this.src}: status ${status}`)
   }
 
+  watchTime() {
+    this.interval = window.setInterval(
+      () => this.media.getCurrentPosition(this.timeUpdate.bind(this)),
+      100
+    )
+  }
+
   timeUpdate (pos) {
     console.log(`${this.src}: position ${pos}`)
-    if (this.next && pos >= this.media.getDuration() - this.tail) {
-      this.next()
-      this.next = null
+    if (!this.tailReached && pos >= this.media.getDuration() - this.tailPos) {
+      this.tailReached = true
+      this.emit('tail')
     }
   }
 
