@@ -3,11 +3,20 @@ import Block from 'block'
 class Player {
   /**
    * @param {Array.<Block>} sequence
+   * @param {Object} opts
    */
-  constructor (sequence) {
+  constructor (sequence, opts) {
+    this.setOpts(opts)
     this.seq = sequence.reverse()
     this.playQueue = []
     this.getNext()
+  }
+
+  /**
+   * @param {Object} opts
+   */
+  setOpts ({skip}) {
+    this.skipTime = skip
   }
 
   getNext () {
@@ -49,6 +58,8 @@ class Player {
       case 'end':
         this.blockEnd()
         break
+      case 'start':
+
     }
 
     this.emit(type, emitter, data)
