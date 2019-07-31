@@ -14,9 +14,9 @@ class Player {
     const next = this.seq.pop()
 
     if (this.seq.length === 0) {
-      next.start(null, this.ended.bind(this))
+      next.start(this, null, this.ended.bind(this))
     } else {
-      next.start(() => this.getNext().play(), () => this.cur.delete(next))
+      next.start(this, () => this.getNext().play(), () => this.cur.delete(next))
     }
 
     this.cur.add(next)
@@ -34,6 +34,22 @@ class Player {
   ended () {
     this.cur.clear()
     console.log('The whole sequence has ended')
+  }
+
+  /**
+   * @param {String} type
+   * @param {Object} emitter
+   * @param {Object} data
+   */
+  receive (type, emitter, data) {
+    switch (type) {
+    }
+
+    this.emit(type, emitter, data)
+  }
+
+  emit (type, emitter, data) {
+    // todo: write emit
   }
 }
 

@@ -8,10 +8,8 @@ const Block = class {
     this.tail = tail
   }
 
-  start (
-    next,
-    ended
-  ) {
+  start (upstream, next, ended) {
+    this.upstream = upstream
     this.next = next
     this.ended = ended
 
@@ -79,6 +77,14 @@ const Block = class {
       this.next()
       this.next = null
     }
+  }
+
+  /**
+   * @param {String} type
+   * @param {Object} data
+   */
+  emit (type, data = {}) {
+    this.upstream.receive(type, this, data)
   }
 }
 
