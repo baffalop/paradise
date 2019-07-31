@@ -15,10 +15,10 @@ const Block = class {
     this.media = new Media(
       this.basePath + this.src,
       () => {
-        console.log(`${this.src}: initialised`)
+        this.log(`initialised`)
       },
       e => {
-        console.log(`${this.src}: error: ${e.message}`)
+        this.log(`error: ${e.message}`)
       },
       this.statusUpdate.bind(this)
     )
@@ -43,6 +43,7 @@ const Block = class {
   skip (interval) {
     this.media.getCurrentPosition(pos => {
       const newPos = pos + interval
+      this.log(`skipping from ${pos} to ${newPos}`)
       if (newPos < 0) {
         this.emit('start')
         this.media.seekTo(0)
@@ -76,7 +77,7 @@ const Block = class {
         this.emit('end')
         break
     }
-    console.log(`${this.src}: status ${status}`)
+    this.log(`status ${status}`)
   }
 
   watchTime() {
@@ -87,7 +88,6 @@ const Block = class {
   }
 
   timeUpdate (pos) {
-    console.log(`${this.src}: position ${pos}`)
     if (!this.tailReached && pos >= this.media.getDuration() - this.tailPos) {
       this.tailReached = true
       this.emit('tail')
@@ -95,6 +95,7 @@ const Block = class {
   }
 
   goToTail () {
+    this.log('goToTail')
     this.media.seekTo(this.media.getDuration() - this.tailPos)
   }
 
@@ -104,6 +105,10 @@ const Block = class {
    */
   emit (type, data = {}) {
     this.upstream.receive(type, this, data)
+  }
+
+  log (message) {
+    console.log(`Block ${this.src}: ${message}`)
   }
 }
 
