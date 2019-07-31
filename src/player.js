@@ -38,17 +38,6 @@ class Player {
     this.playQueue.map(block => block.skip(this.skipTime * mul))
   }
 
-  blockEnd () {
-    this.playQueue.shift()
-    if (this.playQueue.length === 0) {
-      this.ended()
-    }
-  }
-
-  ended () {
-    console.log('The whole sequence has ended')
-  }
-
   /**
    * @param {String} type
    * @param {Object} emitter
@@ -63,9 +52,29 @@ class Player {
         this.blockEnd()
         break
       case 'start':
+        this.blockHitStart(emitter)
+        break
     }
 
     this.emit(type, emitter, data)
+  }
+
+  blockEnd () {
+    this.playQueue.shift()
+    if (this.playQueue.length === 0) {
+      this.ended()
+    }
+  }
+
+  ended () {
+    console.log('The whole sequence has ended')
+  }
+
+  blockHitStart (block) {
+    const oldest = this.playQueue[0]
+    if (oldest !== block) {
+      oldest.goToTail()
+    }
   }
 
   emit (type, emitter, data) {

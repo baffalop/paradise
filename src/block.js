@@ -94,6 +94,10 @@ const Block = class {
     }
   }
 
+  goToTail () {
+    this.media.seekTo(this.media.getDuration() - this.tailPos)
+  }
+
   /**
    * @param {String} type
    * @param {Object} data
