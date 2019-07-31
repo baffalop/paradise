@@ -6,7 +6,7 @@ class Player {
    */
   constructor (sequence) {
     this.seq = sequence.reverse()
-    this.cur = new Set()
+    this.playQueue = []
     this.getNext()
   }
 
@@ -16,23 +16,23 @@ class Player {
     if (this.seq.length === 0) {
       next.start(this, null, this.ended.bind(this))
     } else {
-      next.start(this, () => this.getNext().play(), () => this.cur.delete(next))
+      next.start(this, () => this.getNext().play(), () => this.playQueue.shift())
     }
 
-    this.cur.add(next)
+    this.playQueue.push(next)
     return next
   }
 
   play () {
-    this.cur.forEach(block => block.play())
+    this.playQueue.map(block => block.play())
   }
 
   pause () {
-    this.cur.forEach(block => block.pause())
+    this.playQueue.map(block => block.pause())
   }
 
   ended () {
-    this.cur.clear()
+    this.playQueue = []
     console.log('The whole sequence has ended')
   }
 
