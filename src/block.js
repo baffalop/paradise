@@ -40,6 +40,18 @@ const Block = class {
     this.media.pause()
   }
 
+  skip (interval) {
+    this.media.getCurrentPosition(pos => {
+      const newPos = pos + interval
+      if (newPos < 0) {
+        this.emit('start')
+        this.media.seekTo(0)
+        return
+      }
+      this.media.seekTo(newPos)
+    })
+  }
+
   statusUpdate (code) {
     let status = '-'
     switch (code) {
