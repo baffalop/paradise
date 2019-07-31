@@ -16,11 +16,12 @@ class Paradise {
 
   init () {
     window.setTimeout(() => this.swipe.next(), 2000)
-
     this.player = new Player(audioData.blocks, audioData.playerOpts)
+    this.setupButtons()
+  }
 
-    document.getElementsByClassName('playpause')[0]
-      .addEventListener('click', e => {
+  setupButtons() {
+    this.setButtonClick('playpause', e => {
         const elem = e.target
         if (elem.classList.contains('play')) {
           this.player.play()
@@ -32,6 +33,13 @@ class Paradise {
           elem.classList.add('play')
         }
       })
+    this.setButtonClick('ffw', e => this.player.skip())
+    this.setButtonClick('rew', e => this.player.skip(-1))
+  }
+
+  setButtonClick (cssClass, listener) {
+    document.getElementsByClassName(cssClass)[0]
+      .addEventListener('click', listener)
   }
 }
 
