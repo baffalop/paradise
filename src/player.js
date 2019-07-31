@@ -34,6 +34,10 @@ class Player {
     this.playQueue.map(block => block.pause())
   }
 
+  skip (mul = 1) {
+    this.playQueue.map(block => block.skip(this.skipTime * mul))
+  }
+
   blockEnd () {
     this.playQueue.shift()
     if (this.playQueue.length === 0) {
@@ -59,7 +63,6 @@ class Player {
         this.blockEnd()
         break
       case 'start':
-
     }
 
     this.emit(type, emitter, data)
