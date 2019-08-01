@@ -44,6 +44,7 @@ class Player {
    * @param {Object} data
    */
   receive (type, emitter, data) {
+    this.log(`received ${type}`)
     switch (type) {
       case 'tail':
         this.getNext().play()
@@ -67,7 +68,7 @@ class Player {
   }
 
   ended () {
-    console.log('The whole sequence has ended')
+    this.log('The whole sequence has ended')
   }
 
   blockHitStart (block) {
@@ -79,6 +80,10 @@ class Player {
 
   emit (type, emitter, data) {
     // todo: write emit
+  }
+
+  log (message) {
+    console.log(`Player: ${message}`)
   }
 }
 
