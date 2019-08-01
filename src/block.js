@@ -49,7 +49,7 @@ const Block = class {
         this.media.seekTo(0)
         return
       }
-      this.media.seekTo(newPos)
+      this.media.seekTo(newPos * 1000)
     })
   }
 
@@ -96,7 +96,8 @@ const Block = class {
 
   goToTail () {
     this.log('goToTail')
-    this.media.seekTo(this.media.getDuration() - this.tailPos)
+    const newPos = this.media.getDuration() - this.tailPos
+    this.media.seekTo(newPos * 1000)
   }
 
   /**
