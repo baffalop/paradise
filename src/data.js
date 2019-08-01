@@ -6,7 +6,7 @@ const audio = {
   },
   basePath: '../www/dummy/audio/',
   blocks: [
-    new Block('intro.mp3', 1.1),
+    new Block('intro.mp3', 2.5),
     new Block('ficus.mp3', 9.0),
   ],
 }
