@@ -19,7 +19,8 @@ const Block = class {
         this.log(`initialised`)
       },
       e => {
-        this.log(`error: ${e.message}`)
+        this.log('error initialising')
+        this.log(e)
       },
       this.statusUpdate.bind(this)
     )
