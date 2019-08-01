@@ -7,6 +7,7 @@ const Block = class {
     this.src = src
     this.tailPos = tail
     this.tailReached = false
+    this.basePath = ''
   }
 
   start (upstream) {
