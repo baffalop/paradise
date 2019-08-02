@@ -67,15 +67,15 @@ class Player {
     }
   }
 
-  ended () {
-    this.log('The whole sequence has ended')
-  }
-
   blockHitStart (block) {
     const oldest = this.playQueue[0]
     if (oldest !== block) {
       oldest.goToTail()
     }
+  }
+
+  ended () {
+    this.log('The whole sequence has ended')
   }
 
   emit (type, emitter, data) {
