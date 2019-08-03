@@ -9,6 +9,7 @@ class Player {
     this.setOpts(opts)
     this.seq = sequence.reverse()
     this.playQueue = []
+    this.oneShotEvents = {}
     this.getNext()
   }
 
@@ -35,6 +36,9 @@ class Player {
   }
 
   /**
+   * To skip multiple blocks at once, we pause them all, wait until they confirm they're paused, then skip them,
+   * then wait until they confirm they've skipped, then play them again.
+   * For explanation of the Crazy Curried reCursion underlying this, @see this.generateCountedEventHandler()
    * @param {Number} mul
    */
   skip (mul = 1) {
@@ -43,19 +47,67 @@ class Player {
       return
     }
 
+    let pauseCallback = () =>  this.playQueue.map(block => block.skip(this.skipTime * mul))
+
     // skipping backwards requires extra checks. @see Block.maybeSkip()
     if (mul < 0) {
-      this.playQueue[this.playQueue.length - 1].maybeSkip(
-        this.skipTime * mul,
-        interval => this.playQueue.map(block => block.skip(interval))
-      )
-      return
+      pauseCallback = () => {
+        this.playQueue[this.playQueue.length - 1].maybeSkip(
+          this.skipTime * mul,
+          interval => this.playQueue.map(block => block.skip(interval))
+        )
+      }
     }
 
-    this.playQueue.map(block => block.skip(this.skipTime * mul))
+    this.oneShotEvent('paused', pauseCallback)
+    this.oneShotEvent('skipped', () => this.play())
+    this.pause()
   }
 
   /**
+   *
+   * @param {String} type
+   * @param {function()} callback
+   */
+  oneShotEvent (type, callback) {
+    if (this.oneShotIsCallable(type)) {
+      throw new Error(`Event '${type}' already has a one shot handler`)
+    }
+
+    this.oneShotEvents[type] = this.generateCountedEventHandler(this.playQueue.length, callback)
+  }
+
+  /**
+   * @param {String} type
+   * @returns {boolean}
+   */
+  oneShotIsCallable (type) {
+    return this.oneShotEvents.hasOwnProperty(type) && typeof this.oneShotEvents[type] === 'function'
+  }
+
+  /**
+   * Crazy Currying reCursion:
+   * When an event handler is called, it is reassigned its return value. This method curries a callback function that
+   * will countdown until all expected events are received, then fire the target callback and deactivate the event handler
+   *
+   * @param {Number} count
+   * @param {function()} callback
+   * @returns {function(): ?function()}
+   */
+  generateCountedEventHandler (count, callback) {
+    if (count > 1) {
+      return () => this.generateCountedEventHandler(--count, callback)
+    }
+
+    return () => {
+      callback()
+      return null
+    }
+  }
+
+  /**
+   * Receive, handle and bubble an event emitted by a child object
+   *
    * @param {String} type
    * @param {Object} emitter
    * @param {Object} data
@@ -69,6 +121,10 @@ class Player {
       case 'end':
         this.blockEnd()
         break
+      default:
+        if (this.oneShotIsCallable(type)) {
+          this.oneShotEvents[type] = this.oneShotEvents[type]()
+        }
     }
 
     this.emit(type, emitter, data)

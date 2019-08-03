@@ -55,11 +55,15 @@ const Block = class {
     )
   }
 
+  /**
+   * @param {Number} interval
+   */
   skip (interval) {
     this.media.getCurrentPosition(pos => {
       const newPos = pos + interval
       this.log(`skipping from ${pos} to ${newPos}`)
       this.media.seekTo(newPos * 1000)
+      this.emit('skipped')
     })
   }
 
@@ -75,10 +79,12 @@ const Block = class {
       case Media.MEDIA_RUNNING:
         status = 'RUNNING'
         this.watchTime()
+        this.emit('playing')
         break
       case Media.MEDIA_PAUSED:
         status = 'PAUSED'
         window.clearInterval(this.interval)
+        this.emit('paused')
         break
       case Media.MEDIA_STOPPED:
         status = 'STOPPED'
@@ -105,6 +111,8 @@ const Block = class {
   }
 
   /**
+   * Emit an event to be caught by upstream object (ie. Player)
+   *
    * @param {String} type
    * @param {Object} data
    */
