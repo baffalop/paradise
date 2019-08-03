@@ -42,15 +42,23 @@ const Block = class {
     this.media.pause()
   }
 
+  /**
+   * Determine whether interval to skip is within time bounds. If not, adjust the interval.
+   * Call the callback with adjusted interval.
+   *
+   * @param {Number} interval
+   * @param {Function} callback
+   */
+  maybeSkip (interval, callback) {
+    this.media.getCurrentPosition(
+      pos => callback(pos + interval < 0 ? -pos : interval)
+    )
+  }
+
   skip (interval) {
     this.media.getCurrentPosition(pos => {
       const newPos = pos + interval
       this.log(`skipping from ${pos} to ${newPos}`)
-      if (newPos < 0) {
-        this.emit('start')
-        this.media.seekTo(0)
-        return
-      }
       this.media.seekTo(newPos * 1000)
     })
   }
@@ -94,12 +102,6 @@ const Block = class {
       this.tailReached = true
       this.emit('tail')
     }
-  }
-
-  goToTail () {
-    this.log('goToTail')
-    const newPos = this.media.getDuration() - this.tailPos
-    this.media.seekTo(newPos * 1000)
   }
 
   /**

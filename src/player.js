@@ -34,7 +34,24 @@ class Player {
     this.playQueue.map(block => block.pause())
   }
 
+  /**
+   * @param {Number} mul
+   */
   skip (mul = 1) {
+    if (this.playQueue.length === 0) {
+      this.log('skip called with nothing in playQueue')
+      return
+    }
+
+    // skipping backwards requires extra checks. @see Block.maybeSkip()
+    if (mul < 0) {
+      this.playQueue[this.playQueue.length - 1].maybeSkip(
+        this.skipTime * mul,
+        interval => this.playQueue.map(block => block.skip(interval))
+      )
+      return
+    }
+
     this.playQueue.map(block => block.skip(this.skipTime * mul))
   }
 
@@ -52,9 +69,6 @@ class Player {
       case 'end':
         this.blockEnd()
         break
-      case 'start':
-        this.blockHitStart(emitter)
-        break
     }
 
     this.emit(type, emitter, data)
@@ -64,13 +78,6 @@ class Player {
     this.playQueue.shift()
     if (this.playQueue.length === 0) {
       this.ended()
-    }
-  }
-
-  blockHitStart (block) {
-    const oldest = this.playQueue[0]
-    if (oldest !== block) {
-      oldest.goToTail()
     }
   }
 
