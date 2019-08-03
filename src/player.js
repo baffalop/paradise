@@ -14,12 +14,17 @@ class Player {
   }
 
   /**
-   * @param {Object} opts
+   * @param {{skip: Number}} opts
    */
   setOpts ({skip}) {
     this.skipTime = skip
   }
 
+  /**
+   * Add the next Block to the playQueue, initialise and return it
+   *
+   * @returns {Block}
+   */
   getNext () {
     const next = this.seq.pop()
     next.start(this)

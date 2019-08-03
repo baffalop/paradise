@@ -10,6 +10,11 @@ const Block = class {
     this.basePath = ''
   }
 
+  /**
+   * Initialise media and upstream (the object that receives our emitted events)
+   *
+   * @param {Object} upstream
+   */
   start (upstream) {
     this.upstream = upstream
 
@@ -67,6 +72,11 @@ const Block = class {
     })
   }
 
+  /**
+   * Callback for Media
+   *
+   * @param {Number} code
+   */
   statusUpdate (code) {
     let status = '-'
     switch (code) {
@@ -83,12 +93,12 @@ const Block = class {
         break
       case Media.MEDIA_PAUSED:
         status = 'PAUSED'
-        window.clearInterval(this.interval)
+        window.clearInterval(this.timeUpdateInterval)
         this.emit('paused')
         break
       case Media.MEDIA_STOPPED:
         status = 'STOPPED'
-        window.clearInterval(this.interval)
+        window.clearInterval(this.timeUpdateInterval)
         this.media.release()
         this.emit('end')
         break
@@ -96,13 +106,19 @@ const Block = class {
     this.log(`status ${status}`)
   }
 
+  /**
+   * Start watching media's current time with timeUpdate
+   */
   watchTime() {
-    this.interval = window.setInterval(
+    this.timeUpdateInterval = window.setInterval(
       () => this.media.getCurrentPosition(this.timeUpdate.bind(this)),
       100
     )
   }
 
+  /**
+   * @param {Number} pos
+   */
   timeUpdate (pos) {
     if (!this.tailReached && pos >= this.media.getDuration() - this.tailPos) {
       this.tailReached = true
@@ -120,6 +136,9 @@ const Block = class {
     this.upstream.receive(type, this, data)
   }
 
+  /**
+   * @param {String} message
+   */
   log (message) {
     console.log(`Block ${this.src}: ${message}`)
   }
