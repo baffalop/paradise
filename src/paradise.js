@@ -1,6 +1,7 @@
 import { audio as audioData } from 'data'
 import Swipe from 'swipejs'
 import Player from 'player'
+import EventMixin from 'events'
 
 class Paradise {
   constructor () {
@@ -28,7 +29,7 @@ class Paradise {
    */
   init () {
     window.setTimeout(() => this.swipe.next(), 2000)
-    this.player = new Player(audioData.blocks, audioData.playerOpts)
+    this.player = (new Player(audioData.blocks, audioData.playerOpts)).setUpstream(this)
     this.setupButtons()
     this.active = true
   }
@@ -82,6 +83,8 @@ class Paradise {
     if (elems.length > 0) elems.addEventListener('click', listener)
   }
 }
+
+Object.assign(Player.prototype, EventMixin)
 
 window.paradise = new Paradise()
 paradise.listen()

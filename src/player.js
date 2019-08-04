@@ -1,4 +1,5 @@
 import Block from 'block'
+import EventMixin from 'events'
 
 class Player {
   /**
@@ -31,8 +32,8 @@ class Player {
    * @returns {Block}
    */
   getNext () {
-    const next = this.seq.pop()
-    next.start(this)
+    const next = this.seq.pop().setUpstream(this)
+    next.start()
     this.playQueue.push(next)
     return next
   }
@@ -116,14 +117,11 @@ class Player {
   }
 
   /**
-   * Receive, handle and bubble an event emitted by a child object
-   *
    * @param {String} type
    * @param {Object} emitter
    * @param {Object} data
    */
-  receive (type, emitter, data) {
-    this.log(`received ${type}`)
+  handleEvent (type, emitter, data = {}) {
     switch (type) {
       case 'tail':
         this.getNext().play()
@@ -136,8 +134,6 @@ class Player {
           this.oneShotEvents[type] = this.oneShotEvents[type]()
         }
     }
-
-    this.emit(type, emitter, data)
   }
 
   blockEnd () {
@@ -152,13 +148,11 @@ class Player {
     this.emit('sequenceEnd')
   }
 
-  emit (type, emitter, data) {
-    // todo: write emit
-  }
-
   log (message) {
     console.log(`Player: ${message}`)
   }
 }
+
+Object.assign(Player.prototype, EventMixin)
 
 export default Player

@@ -1,3 +1,5 @@
+import EventMixin from 'events'
+
 const Block = class {
   /**
    * @param {string} src
@@ -11,13 +13,9 @@ const Block = class {
   }
 
   /**
-   * Initialise media and upstream (the object that receives our emitted events)
-   *
-   * @param {Object} upstream
+   * Initialise media
    */
-  start (upstream) {
-    this.upstream = upstream
-
+  start () {
     this.media = new Media(
       this.basePath + this.src,
       () => {
@@ -25,10 +23,12 @@ const Block = class {
       },
       e => {
         this.log('error initialising')
-        this.log(e)
+        console.log(e)
       },
       this.statusUpdate.bind(this)
     )
+
+    return this
   }
 
   play () {
@@ -127,21 +127,13 @@ const Block = class {
   }
 
   /**
-   * Emit an event to be caught by upstream object (ie. Player)
-   *
-   * @param {String} type
-   * @param {Object} data
-   */
-  emit (type, data = {}) {
-    this.upstream.receive(type, this, data)
-  }
-
-  /**
    * @param {String} message
    */
   log (message) {
     console.log(`Block ${this.src}: ${message}`)
   }
 }
+
+Object.assign(Player.prototype, EventMixin)
 
 export default Block
