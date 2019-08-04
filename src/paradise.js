@@ -3,6 +3,12 @@ import Swipe from 'swipejs'
 import Player from 'player'
 
 class Paradise {
+  constructor () {
+    this.debounceTime = 100
+    this.playing = false
+    this.active = false
+  }
+
   listen () {
     this.swipe = new Swipe(document.getElementById('slider'), {
       draggable: true,
@@ -18,23 +24,45 @@ class Paradise {
     window.setTimeout(() => this.swipe.next(), 2000)
     this.player = new Player(audioData.blocks, audioData.playerOpts)
     this.setupButtons()
+    this.active = true
+  }
+
+  /**
+   * @param {function(): void} action
+   */
+  doWithDebounce (action) {
+    if (this.active) {
+      action()
+      this.debounce()
+    }
+  }
+
+  debounce () {
+    this.active = false
+    window.setTimeout(() => this.active = true, this.debounceTime)
   }
 
   setupButtons() {
     this.setButtonClick('playpause', e => {
         const elem = e.target
-        if (elem.classList.contains('play')) {
-          this.player.play()
+        if (!this.playing) {
+          this.doWithDebounce(() => this.player.play())
           elem.classList.remove('play')
           elem.classList.add('pause')
-        } else if (elem.classList.contains('pause')) {
-          this.player.pause()
+        } else {
+          this.doWithDebounce(() => this.player.pause())
           elem.classList.remove('pause')
           elem.classList.add('play')
         }
       })
-    this.setButtonClick('ffw', e => this.player.skip())
-    this.setButtonClick('rew', e => this.player.skip(-1))
+    this.setButtonClick(
+      'ffw',
+      e => this.doWithDebounce(() => this.player.skip())
+    )
+    this.setButtonClick(
+      'rew',
+      e => this.doWithDebounce(() => this.player.skip(-1))
+    )
   }
 
   setButtonClick (cssClass, listener) {
