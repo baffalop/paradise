@@ -9,6 +9,9 @@ class Paradise {
     this.active = false
   }
 
+  /**
+   * Do any DOM setup not dependent on deviceready, listen for deviceready event
+   */
   listen () {
     this.swipe = new Swipe(document.getElementById('slider'), {
       draggable: true,
@@ -20,6 +23,9 @@ class Paradise {
     document.addEventListener('deviceready', this.init.bind(this));
   }
 
+  /**
+   * Do deviceready-dependent setup
+   */
   init () {
     window.setTimeout(() => this.swipe.next(), 2000)
     this.player = new Player(audioData.blocks, audioData.playerOpts)
@@ -65,9 +71,15 @@ class Paradise {
     )
   }
 
-  setButtonClick (cssClass, listener) {
-    document.getElementsByClassName(cssClass)[0]
-      .addEventListener('click', listener)
+  /**
+   * Setup an onClick handler for DOM element by class name
+   *
+   * @param {String} className
+   * @param {function(Event): void} listener
+   */
+  setButtonClick (className, listener) {
+    const elems = document.getElementsByClassName(className)
+    if (elems.length > 0) elems.addEventListener('click', listener)
   }
 }
 
