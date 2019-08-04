@@ -123,7 +123,7 @@ class Player {
       case 'tail':
         this.getNext().play()
         break
-      case 'end':
+      case 'blockEnd':
         this.blockEnd()
         break
       default:
@@ -144,6 +144,7 @@ class Player {
 
   ended () {
     this.log('The whole sequence has ended')
+    this.emit('sequenceEnd')
   }
 
   emit (type, emitter, data) {

@@ -100,7 +100,7 @@ const Block = class {
         status = 'STOPPED'
         window.clearInterval(this.timeUpdateInterval)
         this.media.release()
-        this.emit('end')
+        this.emit('blockEnd')
         break
     }
     this.log(`status ${status}`)
