@@ -2,6 +2,8 @@ import Block from 'block'
 import Eventful from 'events'
 
 /**
+ * Manages a sequence of Blocks, coordinating transport actions and relaying events to Paradise
+ *
  * @type {Player}
  * @mixes Eventful
  */

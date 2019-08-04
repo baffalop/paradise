@@ -4,6 +4,8 @@ import Player from 'player'
 import Eventful from 'events'
 
 /**
+ * Top-level class for the app, instantiated once on app launch. Deals with the DOM, and owns the Player.
+ *
  * @class Paradise
  * @mixes Eventful
  */

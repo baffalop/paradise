@@ -1,6 +1,8 @@
 import Eventful from 'events'
 
 /**
+ * Owns a single Media object, passes events to Player
+ *
  * @type {Block}
  * @mixes Eventful
  */
