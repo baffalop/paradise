@@ -2,8 +2,13 @@ import Block from 'block'
 
 class Player {
   /**
+   * @typedef {Object} Opts
+   * @property {Number} skip
+   */
+
+  /**
    * @param {Array.<Block>} sequence
-   * @param {Object} opts
+   * @param {Opts} opts
    */
   constructor (sequence, opts) {
     this.setOpts(opts)
@@ -14,7 +19,7 @@ class Player {
   }
 
   /**
-   * @param {{skip: Number}} opts
+   * @param {Opts} opts
    */
   setOpts ({skip}) {
     this.skipTime = skip
