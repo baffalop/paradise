@@ -1,6 +1,10 @@
 import Block from 'block'
-import EventMixin from 'events'
+import Eventful from 'events'
 
+/**
+ * @type {Player}
+ * @mixes Eventful
+ */
 class Player {
   /**
    * @typedef {Object} Opts
@@ -153,6 +157,6 @@ class Player {
   }
 }
 
-Object.assign(Player.prototype, EventMixin)
+Object.assign(Player.prototype, Eventful)
 
 export default Player

@@ -1,8 +1,14 @@
-const EventMixin = class {
+/**
+ * Mixin for classes emitting and receiving events.
+ * Events go in one direction only: upstream, from child to parent (compositionally speaking)
+ *
+ * @mixin
+ */
+const Eventful = class {
   /**
    * Set upstream: object which receives our emitted events
    *
-   * @param {EventMixin} upstream
+   * @param {Eventful} upstream
    */
   setUpstream (upstream) {
     this.upstream = upstream
@@ -13,7 +19,7 @@ const EventMixin = class {
    * Emit an event to be received by upstream object
    *
    * @param {String} type
-   * @param {EventMixin} emitter
+   * @param {Eventful} emitter
    * @param {Object} data
    */
   emit (type, emitter = this, data) {
@@ -24,7 +30,7 @@ const EventMixin = class {
    * Log, handle, and bubble (re-emit) an event
    *
    * @param {String} type
-   * @param {EventMixin} emitter
+   * @param {Eventful} emitter
    * @param {Object} data
    */
   receive (type, emitter, data) {
@@ -34,4 +40,4 @@ const EventMixin = class {
   }
 }
 
-export default EventMixin
+export default Eventful

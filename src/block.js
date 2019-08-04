@@ -1,5 +1,9 @@
-import EventMixin from 'events'
+import Eventful from 'events'
 
+/**
+ * @type {Block}
+ * @mixes Eventful
+ */
 const Block = class {
   /**
    * @param {string} src
@@ -134,6 +138,6 @@ const Block = class {
   }
 }
 
-Object.assign(Player.prototype, EventMixin)
+Object.assign(Player.prototype, Eventful)
 
 export default Block

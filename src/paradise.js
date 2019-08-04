@@ -1,8 +1,12 @@
 import { audio as audioData } from 'data'
 import Swipe from 'swipejs'
 import Player from 'player'
-import EventMixin from 'events'
+import Eventful from 'events'
 
+/**
+ * @class Paradise
+ * @mixes Eventful
+ */
 class Paradise {
   constructor () {
     this.debounceTime = 100
@@ -84,7 +88,7 @@ class Paradise {
   }
 }
 
-Object.assign(Player.prototype, EventMixin)
+Object.assign(Player.prototype, Eventful)
 
 window.paradise = new Paradise()
 paradise.listen()
