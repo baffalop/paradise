@@ -1,5 +1,5 @@
 import Block from 'block'
-import Eventful from 'events'
+import Eventful from 'eventful'
 
 /**
  * Manages a sequence of Blocks, coordinating transport actions and relaying events to Paradise
