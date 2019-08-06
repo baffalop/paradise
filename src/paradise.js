@@ -62,10 +62,12 @@ class Paradise extends Eventful {
     this.setButtonClick('playpause', e => {
         const elem = e.target
         if (!this.playing) {
+          this.playing = true
           this.doWithDebounce(() => this.player.play())
           elem.classList.remove('play')
           elem.classList.add('pause')
         } else {
+          this.playing = false
           this.doWithDebounce(() => this.player.pause())
           elem.classList.remove('pause')
           elem.classList.add('play')
