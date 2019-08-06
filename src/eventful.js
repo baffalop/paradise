@@ -34,8 +34,8 @@ class Eventful {
    * @param {Object} data
    */
   receive (type, emitter, data) {
-    if (this.hasOwnProperty('log')) this.log(`received event '${type}'`)
-    if (this.hasOwnProperty('handleEvent')) this.handleEvent(type, emitter, data)
+    if (typeof this.log === 'function') this.log(`received event '${type}'`)
+    if (typeof this.handleEvent === 'function') this.handleEvent(type, emitter, data)
     if (typeof this.upstream === 'object') this.emit(type, emitter, data)
   }
 }
