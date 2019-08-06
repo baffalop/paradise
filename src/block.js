@@ -4,14 +4,14 @@ import Eventful from 'events'
  * Owns a single Media object, passes events to Player
  *
  * @type {Block}
- * @mixes Eventful
  */
-const Block = class {
+class Block extends Eventful {
   /**
    * @param {string} src
    * @param {number} tail
    */
   constructor (src, tail) {
+    super()
     this.src = src
     this.tailPos = tail
     this.tailReached = false
@@ -139,7 +139,5 @@ const Block = class {
     console.log(`Block ${this.src}: ${message}`)
   }
 }
-
-Object.assign(Player.prototype, Eventful)
 
 export default Block

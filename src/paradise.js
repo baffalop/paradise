@@ -9,8 +9,9 @@ import Eventful from 'events'
  * @class Paradise
  * @mixes Eventful
  */
-class Paradise {
+class Paradise extends Eventful {
   constructor () {
+    super()
     this.debounceTime = 100
     this.playing = false
     this.active = false
@@ -86,11 +87,13 @@ class Paradise {
    */
   setButtonClick (className, listener) {
     const elems = document.getElementsByClassName(className)
-    if (elems.length > 0) elems.addEventListener('click', listener)
+    if (elems.length > 0) elems[0].addEventListener('click', listener)
   }
 }
 
-Object.assign(Player.prototype, Eventful)
-
 window.paradise = new Paradise()
 paradise.listen()
+
+window.giveMeParadise = function () {
+  window.paradise = new Paradise()
+}

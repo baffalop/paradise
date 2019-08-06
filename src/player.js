@@ -5,9 +5,8 @@ import Eventful from 'events'
  * Manages a sequence of Blocks, coordinating transport actions and relaying events to Paradise
  *
  * @type {Player}
- * @mixes Eventful
  */
-class Player {
+class Player extends Eventful {
   /**
    * @typedef {Object} Opts
    * @property {Number} skip
@@ -18,6 +17,7 @@ class Player {
    * @param {Opts} opts
    */
   constructor (sequence, opts) {
+    super()
     this.setOpts(opts)
     this.seq = sequence.reverse()
     this.playQueue = []
@@ -158,7 +158,5 @@ class Player {
     console.log(`Player: ${message}`)
   }
 }
-
-Object.assign(Player.prototype, Eventful)
 
 export default Player

@@ -1,10 +1,10 @@
 /**
- * Mixin for classes emitting and receiving events.
+ * Abstract class that emits and receives events.
  * Events go in one direction only: upstream, from child to parent (compositionally speaking)
  *
- * @mixin
+ * @type {Eventful}
  */
-const Eventful = class {
+class Eventful {
   /**
    * Set upstream: object which receives our emitted events
    *
@@ -22,7 +22,7 @@ const Eventful = class {
    * @param {Eventful} emitter
    * @param {Object} data
    */
-  emit (type, emitter = this, data) {
+  emit (type, emitter = this, data = {}) {
     this.upstream.receive(type, emitter, data)
   }
 
