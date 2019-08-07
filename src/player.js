@@ -55,7 +55,8 @@ class Player extends Eventful {
   /**
    * To skip multiple blocks at once, we pause them all, wait until they confirm they're paused, then skip them,
    * then wait until they confirm they've skipped, then play them again.
-   * For explanation of the Crazy Curried reCursion underlying this, @see this.generateCountedEventHandler()
+   * @see this.generateCountedEventHandler()
+   *
    * @param {Number} mul
    */
   skip (mul = 1) {
