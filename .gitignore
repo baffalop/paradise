@@ -4,3 +4,4 @@ plugins/
 node_modules/
 www/js/index.js
 **/dummy/
+**/.ds_store
