@@ -23,7 +23,7 @@ class Eventful {
    * @param {Object} data
    */
   emit (type, emitter = this, data = {}) {
-    this.upstream.receive(type, emitter, data)
+    if (typeof this.upstream === 'object') this.upstream.receive(type, emitter, data)
   }
 
   /**
@@ -36,7 +36,7 @@ class Eventful {
   receive (type, emitter, data) {
     if (typeof this.log === 'function') this.log(`received event '${type}'`)
     if (typeof this.handleEvent === 'function') this.handleEvent(type, emitter, data)
-    if (typeof this.upstream === 'object') this.emit(type, emitter, data)
+    this.emit(type, emitter, data)
   }
 }
 
