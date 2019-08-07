@@ -73,13 +73,19 @@ class Paradise extends Eventful {
           elem.classList.add('play')
         }
       })
+
     this.setButtonClick(
       'ffw',
-      e => this.doWithDebounce(() => this.player.skip())
+      e => {
+        if (this.playing) this.doWithDebounce(() => this.player.skip())
+      }
     )
+
     this.setButtonClick(
       'rew',
-      e => this.doWithDebounce(() => this.player.skip(-1))
+      e => {
+        if (this.playing) this.doWithDebounce(() => this.player.skip(-1))
+      }
     )
   }
 
