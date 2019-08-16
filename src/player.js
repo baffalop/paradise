@@ -10,6 +10,7 @@ class Player extends Eventful {
   /**
    * @typedef {Object} Opts
    * @property {Number} skip
+   * @property {Number} tailOvershootThreshold
    */
 
   /**
@@ -27,18 +28,21 @@ class Player extends Eventful {
   /**
    * @param {Opts} opts
    */
-  setOpts ({skip}) {
+  setOpts ({skip, tailOvershootThreshold}) {
     this.skipTime = skip
+    this.tailOvershootThreshold = tailOvershootThreshold
   }
 
   /**
    * Add the next Block to the playQueue, initialise and return it
    *
-   * @returns {Block}
+   * @returns {?Block}
    */
   getNext () {
-    const next = this.seq.pop().setUpstream(this)
-    next.start()
+    const next = this.seq.pop()
+    if (!next) return null
+
+    next.setUpstream(this).start()
     this.playQueue.push(next)
     return next
   }
@@ -74,18 +78,38 @@ class Player extends Eventful {
 
   /**
    * @param {String} type
-   * @param {Object} emitter
+   * @param {Block} emitter
    * @param {Object} data
    */
   handleEvent (type, emitter, data = {}) {
     switch (type) {
       case 'tail':
-        this.getNext().play()
+        this.startNextBlock(emitter)
         break
       case 'blockEnd':
         this.blockEnd()
         break
     }
+  }
+
+  /**
+   * @param {Block} current
+   */
+  startNextBlock(current) {
+    const next = this.getNext()
+    if (!next) {
+      this.log('reached tail of last block')
+      return
+    }
+
+    next.play()
+    this.addOneShotEvent(
+      'playing',
+      () => current.getTailOvershoot(overshoot => {
+        if (overshoot > this.tailOvershootThreshold) next.media.seekTo(overshoot * 1000)
+      }),
+      next
+    )
   }
 
   blockEnd () {

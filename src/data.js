@@ -2,7 +2,8 @@ import Block from 'block'
 
 const audio = {
   playerOpts: {
-    skip: 10
+    skip: 10,
+    tailOvershootThreshold: 0.5,
   },
   basePath: '../www/dummy/audio/',
   blocks: [

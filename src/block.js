@@ -13,7 +13,7 @@ class Block extends Eventful {
   constructor (src, tail) {
     super()
     this.src = src
-    this.tailPos = tail
+    this.tailOffset = tail
     this.tailReached = false
     this.basePath = ''
   }
@@ -73,8 +73,30 @@ class Block extends Eventful {
     this.media.getCurrentPosition(pos => {
       const newPos = pos + interval
       this.log(`skipping from ${pos} to ${newPos}`)
-      this.media.seekTo(newPos * 1000)
+      this.seekTo(newPos)
       this.emit('skipped')
+    })
+  }
+
+  /**
+   * @param {Number} pos
+   */
+  seekTo (pos) {
+    this.media.seekTo(pos * 1000)
+  }
+
+  /**
+   * @param {function(Number):void} callback
+   */
+  getTailOvershoot (callback) {
+    if (!this.tailReached) {
+      throw new Error('getTailOvershoot called but tail not reached')
+    }
+
+    this.media.getCurrentPosition(pos => {
+      const tailPos = this.media.getDuration() - this.tailOffset
+      const tailOvershoot = pos - tailPos
+      callback(tailOvershoot)
     })
   }
 
@@ -126,7 +148,7 @@ class Block extends Eventful {
    * @param {Number} pos
    */
   timeUpdate (pos) {
-    if (!this.tailReached && pos >= this.media.getDuration() - this.tailPos) {
+    if (!this.tailReached && pos >= this.media.getDuration() - this.tailOffset) {
       this.tailReached = true
       this.emit('tail')
     }
