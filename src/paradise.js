@@ -2,6 +2,7 @@ import { audio as audioData } from 'data'
 import Swipe from 'swipejs'
 import Player from 'player'
 import Eventful from 'eventful'
+import Shuffler from 'shuffler'
 
 /**
  * Top-level class for the app, instantiated once on app launch. Deals with the DOM, and owns the Player.
@@ -15,7 +16,6 @@ class Paradise extends Eventful {
     this.debounceTime = 100
     this.playing = false
     this.active = false
-    this.sequence = audioData.blocks
   }
 
   /**
@@ -36,11 +36,13 @@ class Paradise extends Eventful {
    * Do deviceready-dependent setup
    */
   init () {
-    window.setTimeout(() => this.swipe.next(), 2000)
-    this.player = new Player(this.sequence, audioData.playerOpts)
+    const playlist = (new Shuffler(audioData)).shuffle(audioData.playlistLength)
+    this.player = new Player(playlist, audioData.playerOpts)
     this.player.setUpstream(this)
     this.setupButtons()
     this.active = true
+
+    window.setTimeout(() => this.swipe.next(), 2000)
   }
 
   /**
