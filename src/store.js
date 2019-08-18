@@ -1,4 +1,5 @@
 import Player from 'player'
+import Block from "block"
 
 class Store {
   constructor () {
@@ -44,6 +45,46 @@ class Store {
   clearPlaylist () {
     this.storage.removeItem('playlist')
     this.storage.removeItem('position')
+  }
+
+  retrievePlaylist () {
+    const playlistData = this.storage.getItem('playlist')
+    if (playlistData === null || playlistData === '') {
+      this.log('No stored data found')
+      return null
+    }
+
+    let savedPlaylist = []
+    try {
+      savedPlaylist = JSON.parse(playlistData)
+    } catch (e) {
+      this.log(`Error parsing serialized playlist: ${e.message}`)
+      return null
+    }
+
+    if (savedPlaylist.length === 0) {
+      this.log('parsed JSON resulted in empty array (or something else)')
+      return null
+    }
+
+    const playlist = []
+
+    const position = this.retrievePosition()
+    if (position !== 0) {
+      let {src, tail} = savedPlaylist.shift()
+      playlist.push(new Block(src, tail, position))
+    }
+
+    return playlist.concat(savedPlaylist.map(({src, tail}) => new Block(src, tail)))
+  }
+
+  /**
+   * @returns {number}
+   */
+  retrievePosition () {
+    const position = this.storage.getItem('position')
+    if (position === null || position === '') return 0
+    return parseFloat(position)
   }
 
   /**
