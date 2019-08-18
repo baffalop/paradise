@@ -102,6 +102,18 @@ class Block extends Eventful {
   }
 
   /**
+   * Get this Block's constructor arguments
+   *
+   * @returns {{src: string, tail: number}}
+   */
+  getBlockParams () {
+    return {
+      src: this.src,
+      tailOffset: this.tailOffset,
+    }
+  }
+
+  /**
    * @param {function(Number):void} callback
    */
   getTailOvershoot (callback) {
