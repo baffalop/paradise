@@ -112,7 +112,7 @@ class Block extends Eventful {
   getBlockParams () {
     return {
       src: this.src,
-      tailOffset: this.tailOffset,
+      tail: this.tailOffset,
     }
   }
 
