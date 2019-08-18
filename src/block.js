@@ -16,6 +16,7 @@ class Block extends Eventful {
     this.tailOffset = tail
     this.tailReached = false
     this.basePath = ''
+    this.ext = '.mp3'
   }
 
   /**
@@ -23,7 +24,7 @@ class Block extends Eventful {
    */
   start () {
     this.media = new Media(
-      this.basePath + this.src,
+      this.basePath + this.src + this.ext,
       () => {
         this.log(`initialised`)
       },
