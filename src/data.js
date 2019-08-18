@@ -7,7 +7,7 @@ const audio = {
   },
   basePath: '../www/dummy/audio/',
   intro: new Block('intro.mp3', 2.5),
-  conclusion: new Block('ficus.mp3', 0),
+  ending: new Block('ficus.mp3', 0),
   blocks: [
     new Block('ficus.mp3', 9.0),
   ],
@@ -15,7 +15,7 @@ const audio = {
 }
 
 audio.intro.basePath = audio.basePath
-audio.conclusion.basePath = audio.basePath
+audio.ending.basePath = audio.basePath
 audio.blocks.map(block => block.basePath = audio.basePath)
 
 export { audio }

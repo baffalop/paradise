@@ -1,18 +1,18 @@
 class Shuffler {
   /**
    * @param {Block} intro
-   * @param {Block} conclusion
+   * @param {Block} ending
    * @param {Array<Block>} blocks
    */
-  constructor ({intro, conclusion, blocks}) {
+  constructor ({intro, ending, blocks}) {
     this.intro = intro
-    this.conclusion = conclusion
+    this.ending = ending
     this.pool = blocks
   }
 
   /**
    * Build a playlist by selecting a specified number of blocks at random from the pool,
-   * bookended by intro and conclusion
+   * bookended by intro and ending
    *
    * @param {Number} playlistLength
    *
@@ -29,7 +29,7 @@ class Shuffler {
       this.removeElementFromBlocks(randomIndex)
     }
 
-    playlist.push(this.conclusion)
+    playlist.push(this.ending)
     return playlist
   }
 
