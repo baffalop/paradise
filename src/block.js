@@ -17,6 +17,7 @@ class Block extends Eventful {
     this.tailReached = false
     this.basePath = ''
     this.ext = '.mp3'
+    this.lastPosition = 0
   }
 
   /**
@@ -51,6 +52,13 @@ class Block extends Eventful {
       throw new Error('Media not started')
     }
 
+    this.media.getCurrentPosition(
+      pos => {
+        if (pos < 0) return
+        this.lastPosition = pos
+        this.media.pause()
+      }
+    )
     this.media.pause()
   }
 
@@ -84,6 +92,13 @@ class Block extends Eventful {
    */
   seekTo (pos) {
     this.media.seekTo(pos * 1000)
+  }
+
+  /**
+   * @returns {number}
+   */
+  getLastPosition () {
+    return this.lastPosition
   }
 
   /**
@@ -149,6 +164,7 @@ class Block extends Eventful {
    * @param {Number} pos
    */
   timeUpdate (pos) {
+    this.lastPosition = pos
     if (!this.tailReached && pos >= this.media.getDuration() - this.tailOffset) {
       this.tailReached = true
       this.emit('tail')
