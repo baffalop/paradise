@@ -9,14 +9,17 @@ class Block extends Eventful {
   /**
    * @param {string} src
    * @param {number} tail
+   * @param {?number} startFrom
    */
-  constructor (src, tail) {
+  constructor (src, tail, startFrom = null) {
     super()
     this.src = src
     this.tailOffset = tail
-    this.tailReached = false
     this.basePath = ''
     this.ext = '.mp3'
+
+    this.startFrom = startFrom
+    this.tailReached = false
     this.lastPosition = 0
   }
 
@@ -144,6 +147,10 @@ class Block extends Eventful {
         break
       case Media.MEDIA_RUNNING:
         status = 'RUNNING'
+        if (typeof this.startFrom === 'number') {
+          this.seekTo(this.startFrom)
+          this.startFrom = null
+        }
         this.watchTime()
         this.emit('playing')
         break
