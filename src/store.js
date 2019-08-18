@@ -67,15 +67,14 @@ class Store {
       return null
     }
 
-    const playlist = []
+    const playlist = savedPlaylist.map(({src, tail}) => new Block(src, tail))
 
     const position = this.retrievePosition()
     if (position !== 0) {
-      let {src, tail} = savedPlaylist.shift()
-      playlist.push(new Block(src, tail, position))
+      playlist[0].setStartFrom(position)
     }
 
-    return playlist.concat(savedPlaylist.map(({src, tail}) => new Block(src, tail)))
+    return playlist
   }
 
   /**

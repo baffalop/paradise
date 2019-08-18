@@ -9,16 +9,15 @@ class Block extends Eventful {
   /**
    * @param {string} src
    * @param {number} tail
-   * @param {?number} startFrom
    */
-  constructor (src, tail, startFrom = null) {
+  constructor (src, tail) {
     super()
     this.src = src
     this.tailOffset = tail
     this.basePath = ''
     this.ext = '.mp3'
 
-    this.startFrom = startFrom
+    this.startFrom = null
     this.tailReached = false
     this.lastPosition = 0
   }
@@ -88,6 +87,15 @@ class Block extends Eventful {
       this.seekTo(newPos)
       this.emit('skipped')
     })
+  }
+
+  /**
+   * Set a position to skip to immediately on media running
+   *
+   * @param {Number} position
+   */
+  setStartFrom (position) {
+    this.startFrom = position
   }
 
   /**
