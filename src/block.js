@@ -61,7 +61,6 @@ class Block extends Eventful {
         this.media.pause()
       }
     )
-    this.media.pause()
   }
 
   /**
