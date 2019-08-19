@@ -74,6 +74,25 @@ class Paradise extends Eventful {
     window.setTimeout(() => this.active = true, this.debounceTime)
   }
 
+  /**
+   * @param {String} type
+   * @param {Eventful} emitter
+   * @param {Object} data
+   */
+  handleEvent (type, emitter, data = {}) {
+    switch (type) {
+      case 'tail':
+        this.store.savePlaylist(this.player)
+        break
+      case 'timeUpdate':
+        if (!data.hasOwnProperty('position')) {
+          throw new Error('received timeUpdate event with no position property in data')
+        }
+        this.store.savePosition(data.position)
+        break
+    }
+  }
+
   setupButtons() {
     this.setButtonClick('playpause', e => {
         const elem = e.target
@@ -112,6 +131,13 @@ class Paradise extends Eventful {
   setButtonClick (className, listener) {
     const elems = document.getElementsByClassName(className)
     if (elems.length > 0) elems[0].addEventListener('click', listener)
+  }
+
+  /**
+   * @param {String} message
+   */
+  log (message) {
+    console.log(`Paradise: ${message}`)
   }
 }
 

@@ -20,6 +20,10 @@ class Block extends Eventful {
     this.startFrom = null
     this.tailReached = false
     this.lastPosition = 0
+
+    this.timeUpdateMillisecs = 100
+    this.timeUpdateCount = 0
+    this.saveTimeCount = 2000 / this.timeUpdateMillisecs
   }
 
   /**
@@ -58,6 +62,7 @@ class Block extends Eventful {
       pos => {
         if (pos < 0) return
         this.lastPosition = pos
+        this.emit('timeUpdate', {position: pos})
         this.media.pause()
       }
     )
@@ -182,7 +187,7 @@ class Block extends Eventful {
   watchTime() {
     this.timeUpdateInterval = window.setInterval(
       () => this.media.getCurrentPosition(this.timeUpdate.bind(this)),
-      100
+      this.timeUpdateMillisecs
     )
   }
 
@@ -191,9 +196,15 @@ class Block extends Eventful {
    */
   timeUpdate (pos) {
     this.lastPosition = pos
+
     if (!this.tailReached && pos >= this.media.getDuration() - this.tailOffset) {
       this.tailReached = true
       this.emit('tail')
+    }
+
+    if (!this.tailReached && ++this.timeUpdateCount >= this.saveTimeCount) {
+      this.timeUpdateCount = 0
+      this.emit('timeUpdate', {position: pos})
     }
   }
 
