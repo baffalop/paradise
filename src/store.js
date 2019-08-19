@@ -47,6 +47,12 @@ class Store {
     this.storage.removeItem('position')
   }
 
+  /**
+   * Retrieve data saved in localstorage if it exists, and hydrate an array of Blocks to pass in to Player.
+   * Return null if no saved data found or data is bad.
+   *
+   * @returns {Block[]|null}
+   */
   retrievePlaylist () {
     const playlistData = this.storage.getItem('playlist')
     if (playlistData === null || playlistData === '') {
