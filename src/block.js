@@ -14,7 +14,8 @@ class Block extends Eventful {
     super()
     this.src = src
     this.tailOffset = tail
-    this.basePath = ''
+
+    this.basePath = '../www/dummy/audio/'
     this.ext = '.mp3'
 
     this.startFrom = null
