@@ -3,6 +3,7 @@ import Swipe from 'swipejs'
 import Player from 'player'
 import Eventful from 'eventful'
 import Shuffler from 'shuffler'
+import Store from 'store'
 
 /**
  * Top-level class for the app, instantiated once on app launch. Deals with the DOM, and owns the Player.
@@ -13,6 +14,7 @@ import Shuffler from 'shuffler'
 class Paradise extends Eventful {
   constructor () {
     super()
+    this.store = new Store()
     this.debounceTime = 100
     this.playing = false
     this.active = false
@@ -36,13 +38,25 @@ class Paradise extends Eventful {
    * Do deviceready-dependent setup
    */
   init () {
-    const playlist = (new Shuffler(audioData)).shuffle(audioData.playlistLength)
-    this.player = new Player(playlist, audioData.playerOpts)
-    this.player.setUpstream(this)
+    this.initPlayer()
+
     this.setupButtons()
     this.active = true
 
     window.setTimeout(() => this.swipe.next(), 2000)
+  }
+
+  /**
+   * Initialise Player based on stored data or a newly shuffled playlist
+   */
+  initPlayer () {
+    let playlist = this.store.retrievePlaylist()
+    if (playlist === null) {
+      playlist = (new Shuffler(audioData)).shuffle(audioData.playlistLength)
+    }
+
+    this.player = new Player(playlist, audioData.playerOpts)
+    this.player.setUpstream(this)
   }
 
   /**
