@@ -29,6 +29,7 @@ class Store {
 
     const savedPlaylist = playlist.map(block => block.getBlockParams())
     this.storage.setItem('playlist', JSON.stringify(savedPlaylist))
+    this.log('saved playlist')
   }
 
   /**
@@ -36,6 +37,7 @@ class Store {
    */
   savePosition (position) {
     this.storage.setItem('position', position.toString())
+    this.log(`saved position: ${position}`)
   }
 
   clearPosition () {
@@ -80,6 +82,7 @@ class Store {
       playlist[0].setStartFrom(position)
     }
 
+    this.log(`playlist of length ${playlist.length} retrieved, with position ${position}`)
     return playlist
   }
 
