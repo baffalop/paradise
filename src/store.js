@@ -1,5 +1,5 @@
 import Player from 'player'
-import Block from "block"
+import Block from 'block'
 
 class Store {
   constructor () {
