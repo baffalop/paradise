@@ -51,13 +51,18 @@ class Paradise extends Eventful {
    * Initialise Player based on stored data or a newly shuffled playlist
    */
   initPlayer () {
+    let usingRetrievedPlaylist = true
     let playlist = this.store.retrievePlaylist()
+
     if (playlist === null) {
+      usingRetrievedPlaylist = false
       playlist = (new Shuffler(audioData)).shuffle(audioData.playlistLength)
     }
 
     this.player = new Player(playlist, audioData.playerOpts)
     this.player.setUpstream(this)
+
+    if (usingRetrievedPlaylist) this.store.savePlaylist(this.player)
   }
 
   /**
