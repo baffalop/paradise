@@ -8,20 +8,21 @@ if [[ $# -eq 0 ]]; then
 fi
 
 source=$1
+name=${source%.*}
 dst=${2:-.}
 
 # iOS
-for s in $iosSizes;do
+for s in $iosSizes; do
     size=${s%x*}
     scale=${s##*x}
     resize=$( bc <<< ${size}*${scale} )
-    convert "$source" -resize ${resize}x${resize}! -unsharp 1x4 "$dst/Icon-App-${size}x${size}@${scale}x.png"
+    convert "$source" -resize ${resize}x${resize}! -unsharp 1x4 "$dst/${name}-${size}@${scale}x.png"
 done
 
 # android
-convert "$base" -resize 36x36!    "Icon-ldpi.png"
-convert "$base" -resize 48x48!    "Icon-mdpi.png"
-convert "$base" -resize 72x72!    "Icon-hdpi.png"
-convert "$base" -resize 96x96!    "Icon-xhdpi.png"
-convert "$base" -resize 144x144!  "Icon-xxhdpi.png"
-convert "$base" -resize 192x192!  "Icon-xxxhdpi.png"
+# convert "$source" -resize 36x36!   -unsharp 1x4 "Icon-ldpi.png"
+# convert "$source" -resize 48x48!   -unsharp 1x4 "Icon-mdpi.png"
+# convert "$source" -resize 72x72!   -unsharp 1x4 "Icon-hdpi.png"
+# convert "$source" -resize 96x96!   -unsharp 1x4 "Icon-xhdpi.png"
+# convert "$source" -resize 144x144! -unsharp 1x4 "Icon-xxhdpi.png"
+# convert "$source" -resize 192x192! -unsharp 1x4 "Icon-xxxhdpi.png"
