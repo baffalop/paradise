@@ -9,7 +9,6 @@ import Store from 'store'
  * Top-level class for the app, instantiated once on app launch. Deals with the DOM, and owns the Player.
  *
  * @class Paradise
- * @mixes Eventful
  */
 class Paradise extends Eventful {
   constructor () {
