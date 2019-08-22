@@ -8,7 +8,6 @@ if [[ $# -eq 0 ]]; then
 fi
 
 source=$1
-name=${source%.*}
 dst=${2:-.}
 
 # iOS
@@ -16,7 +15,8 @@ for s in $iosSizes; do
     size=${s%x*}
     scale=${s##*x}
     resize=$( bc <<< ${size}*${scale} )
-    convert "$source" -resize ${resize}x${resize}! -unsharp 1x4 "$dst/${name}-${size}@${scale}x.png"
+
+    convert "$source" -resize ${resize}x${resize}! -unsharp 1x4 "$dst/icon-ios-${size}@${scale}x.png"
 done
 
 # android
