@@ -2,6 +2,12 @@
 platforms/
 plugins/
 node_modules/
-www/js/index.js
 **/dummy/
 **/.ds_store
+
+# Webpack-generated
+www/js/index.js
+
+# Script-generated
+res/icon/icon-ios-*
+res/screen/Default*
