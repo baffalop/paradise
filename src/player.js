@@ -22,7 +22,7 @@ class Player extends Eventful {
     this.setOpts(opts)
     this.seq = sequence.reverse()
     this.playQueue = []
-    this.getNext()
+    this.cueNext()
   }
 
   /**
@@ -34,17 +34,24 @@ class Player extends Eventful {
   }
 
   /**
-   * Add the next Block to the playQueue, initialise and return it
+   * Move next block to play queue and return. Also start subsequent block in advance.
+   * If a callback is provided, call with current before starting next.
+   *
+   * @param {?function(Block):void} callback
    *
    * @returns {?Block}
    */
-  getNext () {
+  cueNext (callback = null) {
     const next = this.seq.pop()
-    if (!next) return null
+    if (next) {
+      this.playQueue.push(next)
+      if (!next.media) next.setUpstream(this).start()
+      if (typeof callback === 'function') callback(next)
+    }
 
-    next.setUpstream(this).start()
-    this.playQueue.push(next)
-    return next
+    if (this.seq.length > 0) this.seq[this.seq.length - 1].setUpstream(this).start()
+
+    return next || null
   }
 
   play () {
@@ -96,13 +103,12 @@ class Player extends Eventful {
    * @param {Block} current
    */
   startNextBlock(current) {
-    const next = this.getNext()
+    const next = this.cueNext(block => block.play())
     if (!next) {
       this.log('reached tail of last block')
       return
     }
 
-    next.play()
     this.addOneShotEvent(
       'playing',
       () => current.getTailOvershoot(overshoot => {
