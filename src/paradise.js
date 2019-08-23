@@ -43,7 +43,7 @@ class Paradise extends Eventful {
     this.setupButtons()
     this.active = true
 
-    window.setTimeout(() => this.swipe.next(), 2000)
+    window.setTimeout(() => this.swipe.next(), 3000)
   }
 
   /**
