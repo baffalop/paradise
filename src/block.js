@@ -24,7 +24,7 @@ class Block extends Eventful {
 
     this.timeUpdateMillisecs = 100
     this.timeUpdateCount = 0
-    this.saveTimeCount = 2000 / this.timeUpdateMillisecs
+    this.saveTimeCount = 1000 / this.timeUpdateMillisecs
   }
 
   /**
