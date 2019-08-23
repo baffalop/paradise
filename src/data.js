@@ -5,7 +5,7 @@ const audio = {
     skip: 10,
     tailOvershootThreshold: 0.5,
   },
-  intro: new Block('intro', 2.5),
+  intro: new Block('intro', 6),
   ending: new Block('ending', 0),
   blocks: [
     new Block('ficus', 9.0),
