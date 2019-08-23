@@ -31,6 +31,8 @@ class Block extends Eventful {
    * Initialise media
    */
   start () {
+    this.log('starting')
+
     this.media = new Media(
       this.basePath + this.src + this.ext,
       () => {
