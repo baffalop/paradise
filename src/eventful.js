@@ -38,7 +38,6 @@ class Eventful {
    * @param {Object} data
    */
   receive (type, emitter, data) {
-    if (typeof this.log === 'function') this.log(`received event '${type}'`)
     if (typeof this.handleEvent === 'function') this.handleEvent(type, emitter, data)
     this.handleOneShot(type, emitter, data)
     this.emit(type, data, emitter)
