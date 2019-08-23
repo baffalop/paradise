@@ -91,7 +91,7 @@ class Player extends Eventful {
   handleEvent (type, emitter, data = {}) {
     switch (type) {
       case 'tail':
-        this.startNextBlock(emitter)
+        this.startNextBlock(data)
         break
       case 'blockEnd':
         this.blockEnd()
@@ -100,22 +100,19 @@ class Player extends Eventful {
   }
 
   /**
-   * @param {Block} current
+   * @param {{overshoot: Number}}
    */
-  startNextBlock(current) {
-    const next = this.cueNext(block => block.play())
+  startNextBlock({overshoot}) {
+    this.log(`Queuing next block. Overshoot: ${overshoot}`)
+
+    const next = this.cueNext(block => {
+      if (overshoot > this.tailOvershootThreshold) block.setStartFrom(overshoot)
+      block.play()
+    })
+
     if (!next) {
       this.log('reached tail of last block')
-      return
     }
-
-    this.addOneShotEvent(
-      'playing',
-      () => current.getTailOvershoot(overshoot => {
-        if (overshoot > this.tailOvershootThreshold) next.media.seekTo(overshoot * 1000)
-      }),
-      next
-    )
   }
 
   blockEnd () {

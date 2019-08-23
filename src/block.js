@@ -91,6 +91,7 @@ class Block extends Eventful {
       this.log(`skipping from ${pos} to ${newPos}`)
       this.seekTo(newPos)
       this.emit('skipped')
+      this.checkTail(newPos)
     })
   }
 
@@ -127,21 +128,6 @@ class Block extends Eventful {
       src: this.src,
       tail: this.tailOffset,
     }
-  }
-
-  /**
-   * @param {function(Number):void} callback
-   */
-  getTailOvershoot (callback) {
-    if (!this.tailReached) {
-      throw new Error('getTailOvershoot called but tail not reached')
-    }
-
-    this.media.getCurrentPosition(pos => {
-      const tailPos = this.media.getDuration() - this.tailOffset
-      const tailOvershoot = pos - tailPos
-      callback(tailOvershoot)
-    })
   }
 
   /**
@@ -198,14 +184,28 @@ class Block extends Eventful {
   timeUpdate (pos) {
     this.lastPosition = pos
 
-    if (!this.tailReached && pos >= this.media.getDuration() - this.tailOffset) {
-      this.tailReached = true
-      this.emit('tail')
-    }
+    this.checkTail(pos)
 
     if (!this.tailReached && ++this.timeUpdateCount >= this.saveTimeCount) {
       this.timeUpdateCount = 0
       this.emit('timeUpdate', {position: pos})
+    }
+  }
+
+  /**
+   * Check if position has reached tail and emit event if so
+   *
+   * @param {Number} pos
+   */
+  checkTail (pos) {
+    if (this.tailReached) {
+      return
+    }
+
+    const tailPos = this.media.getDuration() - this.tailOffset
+    if (pos >= tailPos) {
+      this.tailReached = true
+      this.emit('tail', {overshoot: pos - tailPos})
     }
   }
 
