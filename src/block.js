@@ -20,11 +20,12 @@ class Block extends Eventful {
 
     this.startFrom = null
     this.tailReached = false
+    this.overlapping = false
     this.lastPosition = 0
 
-    this.timeUpdateMillisecs = 100
+    this.timeUpdateInterval = 100
     this.timeUpdateCount = 0
-    this.saveTimeCount = 1000 / this.timeUpdateMillisecs
+    this.saveTimeCount = 1000 / this.timeUpdateInterval
   }
 
   /**
@@ -71,17 +72,8 @@ class Block extends Eventful {
     )
   }
 
-  /**
-   * Determine whether interval to skip is within time bounds. If not, adjust the interval.
-   * Call the callback with adjusted interval.
-   *
-   * @param {Number} interval
-   * @param {Function} callback
-   */
-  maybeSkip (interval, callback) {
-    this.media.getCurrentPosition(
-      pos => callback(pos + interval < 0 ? -pos : interval)
-    )
+  stop () {
+    this.media.stop()
   }
 
   /**
@@ -92,9 +84,16 @@ class Block extends Eventful {
       const newPos = pos + interval
       this.log(`skipping from ${pos} to ${newPos}`)
       this.seekTo(newPos)
-      this.emit('skipped')
       this.checkTail(newPos)
     })
+  }
+
+  /**
+   * @param {Number} pos
+   */
+  seekTo (pos) {
+    this.media.seekTo(pos * 1000)
+    this.emit('skipped')
   }
 
   /**
@@ -107,10 +106,18 @@ class Block extends Eventful {
   }
 
   /**
-   * @param {Number} pos
+   * Set flag whether we are overlapping with another block (in which case we can't call Media methods)
+   * If we are now no longer overlapping, start the timeUpdate interval.
+   *
+   * @param {boolean} overlapping
    */
-  seekTo (pos) {
-    this.media.seekTo(pos * 1000)
+  setOverlapping (overlapping) {
+    if (this.overlapping !== overlapping) {
+      this.overlapping = overlapping
+      if (!overlapping) {
+        this.watchTime()
+      }
+    }
   }
 
   /**
@@ -157,12 +164,12 @@ class Block extends Eventful {
         break
       case Media.MEDIA_PAUSED:
         status = 'PAUSED'
-        window.clearInterval(this.timeUpdateInterval)
+        this.stopWatchingTime()
         this.emit('paused')
         break
       case Media.MEDIA_STOPPED:
         status = 'STOPPED'
-        window.clearInterval(this.timeUpdateInterval)
+        this.stopWatchingTime()
         this.media.release()
         this.emit('blockEnd')
         break
@@ -173,11 +180,28 @@ class Block extends Eventful {
   /**
    * Start watching media's current time with timeUpdate
    */
-  watchTime() {
-    this.timeUpdateInterval = window.setInterval(
+  watchTime () {
+    if (this.tailReached) {
+      this.log('tail reached so not querying play position')
+      return
+    }
+
+    if (this.overlapping) {
+      this.log('currently overlapping with previous audio so not querying play position')
+      return
+    }
+
+    this.timeUpdateId = window.setInterval(
       () => this.media.getCurrentPosition(this.timeUpdate.bind(this)),
-      this.timeUpdateMillisecs
+      this.timeUpdateInterval
     )
+  }
+
+  /**
+   * Clear the interval for timeUpdate
+   */
+  stopWatchingTime () {
+    window.clearInterval(this.timeUpdateId)
   }
 
   /**
@@ -207,6 +231,7 @@ class Block extends Eventful {
     const tailPos = this.media.getDuration() - this.tailOffset
     if (pos >= tailPos) {
       this.tailReached = true
+      this.stopWatchingTime()
       this.emit('tail', {overshoot: pos - tailPos})
     }
   }

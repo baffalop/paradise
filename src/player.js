@@ -59,6 +59,11 @@ class Player extends Eventful {
   }
 
   pause () {
+    if (this.isOverlapping()) {
+      this.stopOverlap(this.pause.bind(this))
+      return
+    }
+
     this.playQueue.map(block => block.pause())
   }
 
@@ -71,16 +76,32 @@ class Player extends Eventful {
       return
     }
 
-    // skipping backwards requires extra checks. @see Block.maybeSkip()
-    if (mul < 0) {
-      this.playQueue[this.playQueue.length - 1].maybeSkip(
-        this.skipTime * mul,
-        interval => this.playQueue.map(block => block.skip(interval))
-      )
+    if (this.isOverlapping()) {
+      this.stopOverlap(() => this.skip(mul))
       return
     }
 
     this.playQueue.map(block => block.skip(this.skipTime * mul))
+  }
+
+  /**
+   * Is more than one audio element playing?
+   *
+   * @returns {boolean}
+   */
+  isOverlapping () {
+    return this.playQueue.length > 1
+  }
+
+  /**
+   * For any actions performed while two blocks are playing, we first need to stop the previous block.
+   * Otherwise, we run into a media plugin bug that throws an exception when interacting with multiple playing media.
+   *
+   * @param {function(): void} callback executed when the overlapping block has been stopped and released
+   */
+  stopOverlap (callback) {
+    this.playQueue[0].stop()
+    this.addOneShotEvent('blockEnd', callback, this.playQueue[0])
   }
 
   /**
@@ -94,7 +115,7 @@ class Player extends Eventful {
         this.startNextBlock(data)
         break
       case 'blockEnd':
-        this.blockEnd()
+        this.blockEnd(emitter)
         break
     }
   }
@@ -107,6 +128,7 @@ class Player extends Eventful {
 
     const next = this.cueNext(block => {
       if (overshoot > this.tailOvershootThreshold) block.setStartFrom(overshoot)
+      block.setOverlapping(this.isOverlapping())
       block.play()
     })
 
@@ -115,11 +137,25 @@ class Player extends Eventful {
     }
   }
 
-  blockEnd () {
+  /**
+   * @param {Block} block
+   */
+  blockEnd (block) {
+    if (this.playQueue[0] !== block) {
+      this.log('blockEnd called for block that has already been removed')
+      return
+    }
+
     this.playQueue.shift()
+
     if (this.playQueue.length === 0) {
       this.ended()
+      return
     }
+
+    this.playQueue.map(block => {
+      block.setOverlapping(this.isOverlapping())
+    })
   }
 
   ended () {
