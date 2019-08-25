@@ -36,11 +36,9 @@ class Block extends Eventful {
 
     this.media = new Media(
       this.basePath + this.src + this.ext,
-      () => {
-        this.log(`initialised`)
-      },
+      () => this.log('played through'),
       e => {
-        this.log('error initialising')
+        this.log('error playing media')
         console.log(e)
       },
       this.statusUpdate.bind(this)
