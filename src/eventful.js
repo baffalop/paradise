@@ -57,7 +57,7 @@ class Eventful {
     if (!this.oneShotIsCallable(type)) return
 
     const eventObject = this.oneShotEvents[type]
-    if (eventObject.hasOwnProperty('matchEmitter') && !eventObject.matchEmitter !== emitter) {
+    if (eventObject.hasOwnProperty('matchEmitter') && eventObject.matchEmitter !== emitter) {
       if (typeof this.log === 'function') this.log(`event '${type}' has one shot handler but emitter does not match`)
       return
     }
