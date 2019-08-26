@@ -15,7 +15,7 @@ class Block extends Eventful {
     this.src = src
     this.tailOffset = tail
 
-    this.basePath = '../www/dummy/audio/'
+    this.dir = '../www/dummy/audio/'
     this.ext = '.mp3'
 
     this.startFrom = null
@@ -35,7 +35,7 @@ class Block extends Eventful {
     this.log('starting')
 
     this.media = new Media(
-      this.basePath + this.src + this.ext,
+      this.dir + this.src + this.ext,
       () => this.log('played through'),
       e => {
         this.log('error playing media')
