@@ -105,6 +105,13 @@ class Player extends Eventful {
   }
 
   /**
+   * @returns {Block[]}
+   */
+  getPlaylist () {
+    return this.playQueue.concat(this.seq.reverse())
+  }
+
+  /**
    * @param {String} type
    * @param {Block} emitter
    * @param {Object} data

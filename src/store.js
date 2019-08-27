@@ -10,22 +10,15 @@ class Store {
    * @param {Player} player
    */
   savePlaylist (player) {
-    const playlist = player.seq
-
-    if (player.playQueue.length > 0) {
-      const current = player.playQueue[player.playQueue.length - 1]
-      if (!current.tailReached) {
-        playlist.unshift(current)
-        this.savePosition(current.getLastPosition())
-      } else {
-        this.clearPosition()
-      }
-    }
+    const playlist = player.getPlaylist().filter(block => !block.tailReached)
 
     if (playlist.length === 0) {
       this.log('No savable state. Clearing storage.')
       this.clearPlaylist()
+      return
     }
+
+    this.savePosition(playlist[0].getLastPosition())
 
     const savedPlaylist = playlist.map(block => block.getBlockParams())
     this.storage.setItem('playlist', JSON.stringify(savedPlaylist))
