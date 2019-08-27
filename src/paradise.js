@@ -61,7 +61,7 @@ class Paradise extends Eventful {
     this.player = new Player(playlist, audioData.playerOpts)
     this.player.setUpstream(this)
 
-    if (usingRetrievedPlaylist) this.store.savePlaylist(this.player)
+    if (!usingRetrievedPlaylist) this.store.savePlaylist(this.player)
   }
 
   /**
@@ -190,9 +190,14 @@ class Paradise extends Eventful {
   }
 
   setupButtons() {
-    this.setButtonClick('playpause', e => this.playPause())
-    this.setButtonClick('ffw', e => this.skipForward())
-    this.setButtonClick('rew', e => this.skipBack())
+    this.setButtonClick('playpause', this.playPause.bind(this))
+    this.setButtonClick('ffw', this.skipForward.bind(this))
+    this.setButtonClick('rew', this.skipBack.bind(this))
+
+    document.getElementById('gimme').addEventListener('click', () => {
+      paradise.store.clearPlaylist()
+      paradise.initPlayer()
+    })
   }
 
   /**
@@ -216,7 +221,3 @@ class Paradise extends Eventful {
 
 window.paradise = new Paradise()
 paradise.listen()
-
-window.giveMeParadise = function () {
-  window.paradise = new Paradise()
-}

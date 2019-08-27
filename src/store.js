@@ -42,11 +42,13 @@ class Store {
 
   clearPosition () {
     this.storage.removeItem('position')
+    this.log('cleared position')
   }
 
   clearPlaylist () {
     this.storage.removeItem('playlist')
     this.storage.removeItem('position')
+    this.log('cleared playlist')
   }
 
   /**
