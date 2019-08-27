@@ -22,7 +22,17 @@ class Store {
 
     const savedPlaylist = playlist.map(block => block.getBlockParams())
     this.storage.setItem('playlist', JSON.stringify(savedPlaylist))
-    this.log('saved playlist')
+
+    this.log(`saved playlist [${this.seqToString(savedPlaylist)}]`)
+  }
+
+  /**
+   * @param {Array<{src: String}>} seq
+   *
+   * @returns {String}
+   */
+  seqToString (seq) {
+    return seq.map(item => item.src).join(', ')
   }
 
   /**
@@ -77,7 +87,7 @@ class Store {
       playlist[0].setStartFrom(position)
     }
 
-    this.log(`playlist of length ${playlist.length} retrieved, with position ${position}`)
+    this.log(`retrieved playlist [${this.seqToString(playlist)}]: position ${position}`)
     return playlist
   }
 

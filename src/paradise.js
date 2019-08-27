@@ -61,6 +61,8 @@ class Paradise extends Eventful {
     this.player = new Player(playlist, audioData.playerOpts)
     this.player.setUpstream(this)
 
+    this.log('new Player initialised')
+
     if (!usingRetrievedPlaylist) this.store.savePlaylist(this.player)
   }
 
