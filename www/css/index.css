@@ -79,8 +79,8 @@ a:hover, a:active {
 
 .controlButton {
     cursor: pointer;
-    height: 100px;
-    width: 100px;
+    height: 80px;
+    min-width: 80px;
     background: transparent;
     background-size: 100% auto;
     background-repeat: no-repeat;
@@ -91,16 +91,18 @@ a:hover, a:active {
 }
 
 .controlButton.ffw {
+    transform: translate(-8px);
     background-image: url(../dummy/img/wind-fw.png);
 }
 
 .controlButton.rew {
+    transform: translateY(16px);
     background-image: url(../dummy/img/wind-back.png);
 }
 
 .controlButton.playpause {
-    background-image: url(../dummy/img/play-pause-wait.png);
-    width: 180px;
+    background-image: url(../dummy/img/play-pause.png);
+    width: 160px;
     background-size: 100% auto;
 }
 
@@ -109,7 +111,7 @@ a:hover, a:active {
 }
 
 .playpause.pause {
-    background-position: 50% -100px;
+    background-position: 50% -80px;
 }
 
 /* Fragment titles - generic */
