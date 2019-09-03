@@ -22,7 +22,6 @@ class Player extends Eventful {
     this.setOpts(opts)
     this.seq = sequence.reverse()
     this.playQueue = []
-    this.cueNext()
   }
 
   /**
@@ -46,7 +45,10 @@ class Player extends Eventful {
     if (next) {
       this.playQueue.push(next)
       if (!next.media) next.setUpstream(this).start()
+
       if (typeof callback === 'function') callback(next)
+
+      this.emit('blockTransition', {name: next.src})
     }
 
     if (this.seq.length > 0) this.seq[this.seq.length - 1].setUpstream(this).start()

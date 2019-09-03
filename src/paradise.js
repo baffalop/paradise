@@ -4,6 +4,7 @@ import Player from 'player'
 import Eventful from 'eventful'
 import Shuffler from 'shuffler'
 import Store from 'store'
+import Titles from 'titles'
 
 /**
  * Top-level class for the app, instantiated once on app launch. Deals with the DOM, and owns the Player.
@@ -14,6 +15,7 @@ class Paradise extends Eventful {
   constructor () {
     super()
     this.store = new Store()
+    this.titles = new Titles()
     this.debounceTime = 100
     this.playing = false
     this.active = false
@@ -59,7 +61,7 @@ class Paradise extends Eventful {
     }
 
     this.player = new Player(playlist, audioData.playerOpts)
-    this.player.setUpstream(this)
+    this.player.setUpstream(this).cueNext()
 
     this.log('new Player initialised')
 
@@ -187,6 +189,9 @@ class Paradise extends Eventful {
           throw new Error('received timeUpdate event with no position property in data')
         }
         this.store.savePosition(data.position)
+        break
+      case 'blockTransition':
+        this.titles.transition(data.name)
         break
     }
   }
