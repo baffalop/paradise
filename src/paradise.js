@@ -78,25 +78,19 @@ class Paradise extends Eventful {
   }
 
   /**
-   * Toggle play/pause. If called from within app, should also create/destroy music controls.
-   *
-   * @param {Boolean} fromWithinApp
+   * Toggle play/pause
    */
-  playPause (fromWithinApp = true) {
+  playPause () {
     this.doWithDebounce(() => {
       if (!this.playing) {
         this.playing = true
         this.playPauseButton.classList.add('pause')
         this.player.play()
-        if (fromWithinApp) this.startControls()
       } else {
         this.playing = false
         this.playPauseButton.classList.remove('pause')
         this.player.pause()
-        if (fromWithinApp) this.destroyControls()
       }
-
-      if (!fromWithinApp) MusicControls.updateIsPlaying(this.playing)
     })
   }
 
@@ -106,66 +100,6 @@ class Paradise extends Eventful {
 
   skipForward () {
     if (this.playing) this.doWithDebounce(() => this.player.skip())
-  }
-
-  startControls () {
-    MusicControls.create({
-        hasSkipForward: true,
-        hasSkipBackward: true,
-        skipForwardInterval: 10,
-        skipBackwardInterval: 10,
-
-        album: "I Don't Know Where Paradise Is",
-      },
-      () => this.log('started music controls'),
-      () => this.log('error starting music controls')
-    )
-
-    MusicControls.subscribe(this.handleControlsEvent.bind(this))
-    MusicControls.listen()
-  }
-
-  destroyControls () {
-    MusicControls.destroy(
-      () => this.log('destroyed music controls'),
-      () => this.log('error destroying music controls')
-    )
-  }
-
-  /**
-   * @param {String} action
-   */
-  handleControlsEvent (action) {
-    const message = JSON.parse(action).message
-    this.log(`received controls event ${message}`)
-
-    switch (message) {
-      case 'music-controls-toggle-play-pause':
-        this.playPause()
-        break
-      case 'music-controls-play':
-        if (this.playing) {
-          this.log('received controls play event but already playing')
-          MusicControls.updateIsPlaying(this.playing)
-          break
-        }
-        this.playPause()
-        break
-      case 'music-controls-pause':
-        if (!this.playing) {
-          this.log('received controls pause event but already paused')
-          MusicControls.updateIsPlaying(this.playing)
-          break
-        }
-        this.playPause()
-        break
-      case 'music-controls-next':
-        this.skipForward()
-        break
-      case 'music-controls-previous':
-        this.skipBack()
-        break
-    }
   }
 
   /**
