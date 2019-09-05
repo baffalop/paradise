@@ -40,6 +40,15 @@ class Paradise extends Eventful {
    * Do deviceready-dependent setup
    */
   init () {
+    window.screen.orientation.lock('portrait')
+      .then(
+      () => this.log('screen locked to portrait'),
+      reason => {
+        this.log('screen lock error...')
+        console.log(reason)
+      }
+    )
+
     this.initPlayer()
 
     this.setupButtons()
