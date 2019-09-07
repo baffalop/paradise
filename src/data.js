@@ -7,6 +7,7 @@ const audio = {
   fragments: {
     intro: 'intro',
     ending: 'exlibris',
+    special: 'urinals',
     pool: [
       'ficus'
     ],
@@ -17,7 +18,7 @@ const audio = {
     tail: 3,
   },
 
-  playlistLength: 3,
+  playlistLength: 4,
 }
 
 export { audio }
