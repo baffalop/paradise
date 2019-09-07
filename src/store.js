@@ -1,5 +1,5 @@
 import Player from 'player'
-import Block from 'block'
+import BlockBuilder from 'builder'
 
 class Store {
   constructor () {
@@ -20,19 +20,19 @@ class Store {
 
     this.savePosition(playlist[0].getLastPosition())
 
-    const savedPlaylist = playlist.map(block => block.getBlockParams())
+    const savedPlaylist = playlist.map(block => block.getBlockParams().src)
     this.storage.setItem('playlist', JSON.stringify(savedPlaylist))
 
     this.log(`saved playlist [${this.seqToString(savedPlaylist)}]`)
   }
 
   /**
-   * @param {Array<{src: String}>} seq
+   * @param {string[]} seq
    *
-   * @returns {String}
+   * @returns {string}
    */
   seqToString (seq) {
-    return seq.map(item => item.src).join(', ')
+    return seq.join(', ')
   }
 
   /**
@@ -58,7 +58,7 @@ class Store {
    * Retrieve data saved in localstorage if it exists, and hydrate an array of Blocks to pass in to Player.
    * Return null if no saved data found or data is bad.
    *
-   * @returns {?Block[]}
+   * @returns {BlockBuilder}
    */
   retrievePlaylist () {
     const playlistData = this.storage.getItem('playlist')
@@ -67,28 +67,26 @@ class Store {
       return null
     }
 
-    let savedPlaylist = []
+    let playlist = []
     try {
-      savedPlaylist = JSON.parse(playlistData)
+      playlist = JSON.parse(playlistData)
     } catch (e) {
       this.log(`Error parsing serialized playlist: ${e.message}`)
+      this.clearPlaylist()
       return null
     }
 
-    if (savedPlaylist.length === 0) {
+    if (playlist.length === 0) {
       this.log('parsed JSON resulted in empty array (or something else)')
+      this.clearPlaylist()
       return null
     }
-
-    const playlist = savedPlaylist.map(({src, tail}) => new Block(src, tail))
 
     const position = this.retrievePosition()
-    if (position !== 0) {
-      playlist[0].setStartFrom(position)
-    }
 
     this.log(`retrieved playlist [${this.seqToString(playlist)}]: position ${position}`)
-    return playlist
+
+    return new BlockBuilder(playlist, position)
   }
 
   /**

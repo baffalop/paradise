@@ -1,15 +1,22 @@
-import Block from 'block'
-
 const audio = {
   playerOpts: {
     skip: 10,
     tailOvershootThreshold: 0.5,
   },
-  intro: new Block('intro', 6),
-  ending: new Block('ending', 0),
-  blocks: [
-    new Block('ficus', 9.0),
-  ],
+
+  fragments: {
+    intro: 'intro',
+    ending: 'exlibris',
+    pool: [
+      'ficus'
+    ],
+  },
+
+  blockOpts: {
+    dir: '../www/dummy/audio',
+    tail: 3,
+  },
+
   playlistLength: 3,
 }
 

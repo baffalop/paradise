@@ -1,13 +1,15 @@
+import BlockBuilder from 'builder'
+
 class Shuffler {
   /**
-   * @param {Block} intro
-   * @param {Block} ending
-   * @param {Array<Block>} blocks
+   * @param {string} intro
+   * @param {string} ending
+   * @param {Array<string>} pool
    */
-  constructor ({intro, ending, blocks}) {
+  constructor ({intro, ending, pool}) {
     this.intro = intro
     this.ending = ending
-    this.pool = blocks
+    this.pool = pool
   }
 
   /**
@@ -16,21 +18,22 @@ class Shuffler {
    *
    * @param {Number} playlistLength
    *
-   * @returns {Block[]}
+   * @returns {BlockBuilder}
    */
   shuffle (playlistLength) {
-    const playlist = [this.intro]
+    const sequence = [this.intro]
 
     let targetLength = playlistLength - 2
     while (targetLength-- > 0 && this.pool.length > 0) {
       const randomIndex = Math.floor(Math.random() * this.pool.length)
-      const selectedBlock = this.pool[randomIndex]
-      playlist.push(selectedBlock)
+      const selectedFragment = this.pool[randomIndex]
+      sequence.push(selectedFragment)
       this.removeElementFromBlocks(randomIndex)
     }
 
-    playlist.push(this.ending)
-    return playlist
+    sequence.push(this.ending)
+
+    return new BlockBuilder(sequence)
   }
 
   /**

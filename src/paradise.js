@@ -66,10 +66,12 @@ class Paradise extends Eventful {
 
     if (playlist === null) {
       usingRetrievedPlaylist = false
-      playlist = (new Shuffler(audioData)).shuffle(audioData.playlistLength)
+      playlist = (new Shuffler(audioData.fragments)).shuffle(audioData.playlistLength)
     }
 
-    this.player = new Player(playlist, audioData.playerOpts)
+    const blocks = playlist.build(audioData.blockOpts)
+
+    this.player = new Player(blocks, audioData.playerOpts)
     this.player.setUpstream(this).cueNext()
 
     this.log('new Player initialised')

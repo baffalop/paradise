@@ -7,15 +7,17 @@ import Eventful from 'eventful'
  */
 class Block extends Eventful {
   /**
+   * @param {string} dir
    * @param {string} src
    * @param {number} tail
    */
-  constructor (src, tail) {
+  constructor (dir, src, tail) {
     super()
+
     this.src = src
     this.tailOffset = tail
 
-    this.dir = '../www/dummy/audio/'
+    this.dir = dir
     this.ext = '.mp3'
 
     this.startFrom = null
@@ -132,6 +134,7 @@ class Block extends Eventful {
    */
   getBlockParams () {
     return {
+      dir: this.dir,
       src: this.src,
       tail: this.tailOffset,
     }
