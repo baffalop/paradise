@@ -46,7 +46,7 @@ class Titles {
    * @returns {string}
    */
   getPath (name) {
-    return `url(../www/dummy/img/fragments/${name}.png)`
+    return `url(img/fragments/${name}.png)`
   }
 }
 

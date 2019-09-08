@@ -7,18 +7,29 @@ const audio = {
   fragments: {
     intro: 'intro',
     ending: 'exlibris',
-    special: 'urinals',
+    special: 'urinal',
     pool: [
-      'ficus'
+      'bathhouse',
+      'biographies',
+      'clocks',
+      'duster',
+      'faggot',
+      'ficus',
+      'futurelovers',
+      'illustration',
+      'mirror',
+      'novels',
+      'postcard',
+      'spiderplant',
     ],
   },
 
   blockOpts: {
-    dir: window.audioBasePath,
+    dir: window.audioBasePath + 'audio/',
     tail: 3,
   },
 
-  playlistLength: 4,
+  playlistLength: 8,
 }
 
 export { audio }
