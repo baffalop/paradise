@@ -14,7 +14,7 @@ const audio = {
   },
 
   blockOpts: {
-    dir: '../www/dummy/audio/',
+    dir: window.audioBasePath,
     tail: 3,
   },
 
