@@ -20,7 +20,7 @@ class Player extends Eventful {
   constructor (sequence, opts) {
     super()
     this.setOpts(opts)
-    this.seq = sequence.reverse()
+    this.seq = sequence.slice().reverse()
     this.playQueue = []
   }
 
@@ -110,7 +110,7 @@ class Player extends Eventful {
    * @returns {Block[]}
    */
   getPlaylist () {
-    return this.playQueue.concat(this.seq.reverse())
+    return this.playQueue.concat(this.seq.slice().reverse())
   }
 
   /**
