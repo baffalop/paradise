@@ -23,6 +23,7 @@
     "cordova-plugin-screen-orientation": "^3.0.2",
     "cordova-plugin-splashscreen": "^5.0.3",
     "es6-promise-plugin": "^4.2.2",
+    "fastclick": "^1.0.6",
     "media": "^0.2.1",
     "swipejs": "^2.2.14"
   },

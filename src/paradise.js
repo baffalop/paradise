@@ -5,6 +5,7 @@ import Eventful from 'eventful'
 import Shuffler from 'shuffler'
 import Store from 'store'
 import Titles from 'titles'
+import FastClick from 'fastclick'
 
 /**
  * Top-level class for the app, instantiated once on app launch. Deals with the DOM, and owns the Player.
@@ -51,6 +52,7 @@ class Paradise extends Eventful {
 
     this.initPlayer()
 
+    FastClick.attach(document.body)
     this.setupButtons()
     this.active = true
 
