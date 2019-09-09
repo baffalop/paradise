@@ -83,7 +83,7 @@ a:hover, a:active {
     min-width: 80px;
     background: transparent no-repeat;
     background-size: 100% auto;
-    transition: opacity 150ms ease-in;
+    transition: opacity 80ms ease-in 100ms;
 }
 
 .controlButton:active {
