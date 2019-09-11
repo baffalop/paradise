@@ -156,18 +156,31 @@ class Paradise extends Eventful {
       case 'blockTransition':
         this.titles.transition(data.name)
         break
+      case 'sequenceEnd':
+        this.resetPlayer()
+        window.setTimeout(
+          () => this.swipe.slide(3, this.autoSlideSpeed),
+          3000
+        )
     }
   }
 
-  setupButtons() {
+  resetPlayer () {
+    this.store.clearPlaylist()
+    delete this.player
+
+    this.playing = false
+    this.playPauseButton.classList.remove('pause')
+
+    this.initPlayer()
+  }
+
+  setupButtons () {
     this.setButtonClick('playpause', this.playPause.bind(this))
     this.setButtonClick('ffw', this.skipForward.bind(this))
     this.setButtonClick('rew', this.skipBack.bind(this))
 
-    document.getElementById('gimme').addEventListener('click', () => {
-      paradise.store.clearPlaylist()
-      paradise.initPlayer()
-    })
+    document.getElementById('gimme').addEventListener('click', this.resetPlayer.bind(this))
   }
 
   /**
