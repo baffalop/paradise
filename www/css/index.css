@@ -11,10 +11,6 @@ body {
     font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
     font-size:12px;
     height:100vh;
-    margin:0px;
-    padding:0px;
-    /* Padding to avoid the "unsafe" areas behind notches in the screen */
-    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-right, 0px);
     width:100%;
     color: #c6ecf1;
 }
