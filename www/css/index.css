@@ -71,7 +71,7 @@ a:hover, a:active {
 .title {
     background: url(../img/title.png) no-repeat center;
     background-size: contain;
-    height: 100vh;
+    height: 80vh;
     width: 80%;
 }
 
