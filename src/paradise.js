@@ -17,9 +17,13 @@ class Paradise extends Eventful {
     super()
     this.store = new Store()
     this.titles = new Titles()
-    this.debounceTime = 100
+
     this.playing = false
     this.active = false
+    this.skipFirstSlide = true
+
+    this.autoSlideSpeed = 1100
+    this.debounceTime = 100
   }
 
   /**
@@ -29,9 +33,15 @@ class Paradise extends Eventful {
     this.playPauseButton = document.getElementsByClassName('playpause')[0]
     this.swipe = new Swipe(document.getElementById('slider'), {
       draggable: true,
-      speed: 300,
+      speed: 500,
       continuous: false,
       callback: index => console.log(`Swipe pos: ${index}`),
+      transitionEnd: this.skipFirstSlide ? index => {
+        if (this.skipFirstSlide && index === 1) {
+          this.swipe.slide(2, this.autoSlideSpeed)
+          this.skipFirstSlide = false
+        }
+      } : null,
     })
 
     document.addEventListener('deviceready', this.init.bind(this));
@@ -56,7 +66,10 @@ class Paradise extends Eventful {
     this.setupButtons()
     this.active = true
 
-    window.setTimeout(() => this.swipe.next(), 3000)
+    window.setTimeout(
+      () => this.swipe.slide(1, this.autoSlideSpeed),
+      3000
+    )
   }
 
   /**
@@ -78,7 +91,10 @@ class Paradise extends Eventful {
 
     this.log('new Player initialised')
 
-    if (!usingRetrievedPlaylist) this.store.savePlaylist(this.player)
+    if (!usingRetrievedPlaylist) {
+      this.store.savePlaylist(this.player)
+      this.skipFirstSlide = false
+    }
   }
 
   /**
