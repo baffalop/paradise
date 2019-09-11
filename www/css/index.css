@@ -64,6 +64,10 @@ a:hover, a:active {
 .text {
     width: 80%;
     max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 0.8em;
     text-align: justify;
     line-height: 1.4em;
 }
