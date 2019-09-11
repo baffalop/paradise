@@ -8,11 +8,15 @@ body {
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     background: #fa9c8c url(../img/background.png) no-repeat fixed center center;
     background-size: cover;
-    font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
-    font-size:12px;
+    font-family: 'GaramondBT', serif, system-ui, -apple-system, -apple-system-font;
+    font-size: calc(1.1em + 0.7vw);
     height:100vh;
     width:100%;
-    color: #c6ecf1;
+    color: white;
+}
+
+small {
+    font-size: 0.6em;
 }
 
 a {
@@ -21,7 +25,19 @@ a {
 }
 
 a:hover, a:active {
-    color: #b1d8e9;
+    color: #d1d1d1;
+}
+
+@font-face {
+    font-family: 'GaramondBT';
+    src: url(../fonts/OriginalGaramondBT-Roman.otf);
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GaramondBT';
+    src: url(../fonts/OriginalGaramondBT-Italic.otf);
+    font-style: italic;
 }
 
 .swipe {
@@ -39,9 +55,17 @@ a:hover, a:active {
     position: relative;
     float: left;
     width: 100%;
-    min-height: 100%;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+.text {
+    width: 80%;
+    max-width: 500px;
+    text-align: justify;
+    line-height: 1.4em;
 }
 
 .title {
