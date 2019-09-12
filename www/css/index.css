@@ -55,6 +55,14 @@ p {
     line-height: 1.3em;
 }
 
+.logos {
+    margin-block-start: 0.8em;
+    margin-left: 15%;
+    margin-right: 15%;
+    width: 70%;
+    height: auto;
+}
+
 /* Swipe boilerplate */
 
 .swipe {
