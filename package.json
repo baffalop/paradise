@@ -18,6 +18,7 @@
   "dependencies": {
     "cordova-android": "^8.0.0",
     "cordova-ios": "^5.0.1",
+    "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-media": "^5.0.3",
     "cordova-plugin-screen-orientation": "^3.0.2",
@@ -33,7 +34,8 @@
       "cordova-plugin-file": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-screen-orientation": {}
+      "cordova-plugin-screen-orientation": {},
+      "cordova-plugin-dialogs": {}
     },
     "platforms": [
       "ios",

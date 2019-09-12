@@ -22,6 +22,11 @@ class Paradise extends Eventful {
     this.active = false
     this.skipFirstSlide = true
 
+    // for unlocking developer options. See swipeListener()
+    this.devUnlockSlideIndex = 1
+    this.devUnlockCount = 0
+    this.devUnlockTargetCount = 6
+
     this.autoSlideSpeed = 1100
     this.debounceTime = 100
   }
@@ -35,7 +40,7 @@ class Paradise extends Eventful {
       draggable: true,
       speed: 500,
       continuous: false,
-      callback: index => console.log(`Swipe pos: ${index}`),
+      callback: this.swipeListener.bind(this),
       transitionEnd: this.skipFirstSlide ? index => {
         if (this.skipFirstSlide && index === 1) {
           this.swipe.slide(2, this.autoSlideSpeed)
@@ -75,13 +80,13 @@ class Paradise extends Eventful {
   /**
    * Initialise Player based on stored data or a newly shuffled playlist
    */
-  initPlayer () {
+  initPlayer (playlistLength = null) {
     let usingRetrievedPlaylist = true
     let playlist = this.store.retrievePlaylist()
 
     if (playlist === null) {
       usingRetrievedPlaylist = false
-      playlist = (new Shuffler(audioData.fragments)).shuffle(audioData.playlistLength)
+      playlist = (new Shuffler(audioData.fragments)).shuffle(playlistLength || audioData.playlistLength)
     }
 
     const blocks = playlist.build(audioData.blockOpts)
@@ -138,6 +143,62 @@ class Paradise extends Eventful {
   }
 
   /**
+   * Listens for a sequence of back and forth swipes between 0th and 1st slides, to enable developer mode
+   *
+   * @param {number} index
+   * @param {HTMLElement} element
+   * @param {number} direction
+   */
+  swipeListener (index, element, direction) {
+    const reset = () => {
+      window.clearTimeout(this.devUnlockTimeout)
+      this.devUnlockTimeout = null
+      this.devUnlockCount = 0
+      this.devUnlockSlideIndex = 1
+    }
+
+    this.log(`Swipe index ${index}, direction ${direction}`)
+    const expectedDirection = this.devUnlockSlideIndex === 0 ? 1 : -1
+    if (index !== this.devUnlockSlideIndex || direction !== expectedDirection) {
+      reset()
+      return
+    }
+
+    this.devUnlockSlideIndex = (this.devUnlockSlideIndex + 1) % 2
+    this.devUnlockCount++
+
+    this.log(`Unlock: ${this.devUnlockCount}`)
+
+    if (this.devUnlockCount === 1) {
+      this.devUnlockTimeout = window.setTimeout(() => {
+        this.log('too late!')
+        this.devUnlockSlideIndex = 1
+        this.devUnlockCount = 0
+      }, 3500)
+    }
+
+    if (this.devUnlockCount === this.devUnlockTargetCount) {
+      reset()
+      this.unlockDev()
+    }
+  }
+
+  unlockDev () {
+    navigator.notification.confirm(
+      'What would you like to do?',
+      index => {
+        if (index === 1) {
+          this.resetPlayer()
+        } else if (index === 2) {
+          this.resetPlayer(audioData.fragments.pool.length + 3)
+        }
+      },
+      'Developer Mode',
+      ['Shuffle new playlist', 'Generate full playlist', 'Cancel']
+    )
+  }
+
+  /**
    * @param {String} type
    * @param {Eventful} emitter
    * @param {Object} data
@@ -165,14 +226,14 @@ class Paradise extends Eventful {
     }
   }
 
-  resetPlayer () {
+  resetPlayer (playlistLength = null) {
     this.store.clearPlaylist()
     delete this.player
 
     this.playing = false
     this.playPauseButton.classList.remove('pause')
 
-    this.initPlayer()
+    this.initPlayer(playlistLength)
   }
 
   setupButtons () {
