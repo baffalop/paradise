@@ -61,6 +61,11 @@ a:hover, a:active {
     align-items: center;
 }
 
+p {
+    margin-block-start: 0.6em;
+    margin-block-end: 0.6em;
+}
+
 .text {
     width: 80%;
     max-width: 500px;
@@ -68,8 +73,7 @@ a:hover, a:active {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-right: 0.8em;
-    text-align: justify;
-    line-height: 1.4em;
+    line-height: 1.3em;
 }
 
 .title {
