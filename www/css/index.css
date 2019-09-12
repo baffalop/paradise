@@ -133,16 +133,16 @@ p {
 
 .controlButton.ffw {
     transform: translate(-8px);
-    background-image: url(../dummy/img/wind-fw.png);
+    background-image: url(../img/wind-fw.png);
 }
 
 .controlButton.rew {
     transform: translateY(16px);
-    background-image: url(../dummy/img/wind-back.png);
+    background-image: url(../img/wind-back.png);
 }
 
 .controlButton.playpause {
-    background-image: url(../dummy/img/play-pause.png);
+    background-image: url(../img/play-pause.png);
     width: 160px;
     background-size: 100% auto;
 }
