@@ -6,7 +6,7 @@ body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background: #fa9c8c url(../img/background.png) no-repeat fixed center center;
+    background: #fa9c8c url(img/background.png) no-repeat fixed center center;
     background-size: cover;
     font-family: 'GaramondBT', serif, system-ui, -apple-system, -apple-system-font;
     font-size: calc(1.1em + 0.7vw);
@@ -30,13 +30,13 @@ a:hover, a:active {
 
 @font-face {
     font-family: 'GaramondBT';
-    src: url(../fonts/OriginalGaramondBT-Roman.otf);
+    src: url(fonts/OriginalGaramondBT-Roman.otf);
     font-style: normal;
 }
 
 @font-face {
     font-family: 'GaramondBT';
-    src: url(../fonts/OriginalGaramondBT-Italic.otf);
+    src: url(fonts/OriginalGaramondBT-Italic.otf);
     font-style: italic;
 }
 
@@ -89,7 +89,7 @@ p {
 /* slides */
 
 .title {
-    background: url(../img/title.png) no-repeat center;
+    background: url(img/title.png) no-repeat center;
     background-size: contain;
     height: 80vh;
     width: 80%;
@@ -133,16 +133,16 @@ p {
 
 .controlButton.ffw {
     transform: translate(-8px);
-    background-image: url(../img/wind-fw.png);
+    background-image: url(img/wind-fw.png);
 }
 
 .controlButton.rew {
     transform: translateY(16px);
-    background-image: url(../img/wind-back.png);
+    background-image: url(img/wind-back.png);
 }
 
 .controlButton.playpause {
-    background-image: url(../img/play-pause.png);
+    background-image: url(img/play-pause.png);
     width: 160px;
     background-size: 100% auto;
 }
