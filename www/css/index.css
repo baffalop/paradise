@@ -40,6 +40,23 @@ a:hover, a:active {
     font-style: italic;
 }
 
+p {
+    margin-block-start: 0.6em;
+    margin-block-end: 0.6em;
+}
+
+.text {
+    width: 80%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 0.8em;
+    line-height: 1.3em;
+}
+
+/* Swipe boilerplate */
+
 .swipe {
     overflow: hidden;
     visibility: hidden;
@@ -61,20 +78,7 @@ a:hover, a:active {
     align-items: center;
 }
 
-p {
-    margin-block-start: 0.6em;
-    margin-block-end: 0.6em;
-}
-
-.text {
-    width: 80%;
-    max-width: 500px;
-    max-height: 80vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-right: 0.8em;
-    line-height: 1.3em;
-}
+/* slides */
 
 .title {
     background: url(../img/title.png) no-repeat center;
