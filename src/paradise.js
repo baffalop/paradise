@@ -240,8 +240,6 @@ class Paradise extends Eventful {
     this.setButtonClick('playpause', this.playPause.bind(this))
     this.setButtonClick('ffw', this.skipForward.bind(this))
     this.setButtonClick('rew', this.skipBack.bind(this))
-
-    document.getElementById('gimme').addEventListener('click', this.resetPlayer.bind(this))
   }
 
   /**
