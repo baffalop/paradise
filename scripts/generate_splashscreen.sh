@@ -5,7 +5,7 @@ if [[ $# -eq 0 ]]; then
     exit 1
 fi
 
-iosSizes="Default~iphone:320x480 Default@2x~iphone:640x960 Default-Portrait~ipad:768x1024 Default-Portrait@2x~ipad:1536x2048 Default-Landscape~ipad:1024x768 Default-Landscape@2x~ipad:2048x1536 Default-568h@2x~iphone:640x1136 Default-667h:750x1334 Default-736h:1242x2208"
+iosSizes="Default@2x~universal~anyany:2732x2732 Default@2x~universal~comany:1278x2732 Default@2x~universal~comcom:1334x750 Default@3x~universal~anyany:2208x2208 Default@3x~universal~anycom:2208x1242 Default@3x~universal~comany:1242x2208"
 
 source=$1
 dst=${2:-.}
