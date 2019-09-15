@@ -16,6 +16,10 @@
     <platform name="android">
         <allow-intent href="market:*" />
 
+        <splash src="res/screen/splashscreen.png" />
+        <preference name="SplashMaintainAspectRatio" value="true" />
+        <preference name="SplashScreenSpinnerColor" value="white" />
+
         <icon src="res/icon/icon-android-ldpi.png" density="ldpi" />
         <icon src="res/icon/icon-android-mdpi.png" density="mdpi" />
         <icon src="res/icon/icon-android-hdpi.png" density="hdpi" />
