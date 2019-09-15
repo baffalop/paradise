@@ -15,6 +15,14 @@
 
     <platform name="android">
         <allow-intent href="market:*" />
+
+        <icon src="res/icon/icon-android-ldpi.png" density="ldpi" />
+        <icon src="res/icon/icon-android-mdpi.png" density="mdpi" />
+        <icon src="res/icon/icon-android-hdpi.png" density="hdpi" />
+        <icon src="res/icon/icon-android-xhdpi.png" density="xhdpi" />
+        <icon src="res/icon/icon-android-xxhdpi.png" density="xxhdpi" />
+        <icon src="res/icon/icon-android-xxxhdpi.png" density="xxxhdpi" />
+
     </platform>
 
     <platform name="ios">

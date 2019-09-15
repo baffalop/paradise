@@ -4,9 +4,9 @@ npm run build
 
 # generate icons
 iconDst='res/icon/'
-iosIconFile="${iconDst}/icon-ios.png"
-if [[ "$iosIconFile" -nt "${iconDst}/icon-ios-1024@1x.png" ]]; then
-    scripts/generate_icons.sh "$iosIconFile" "$iconDst"
+iconSrcFile="${iconDst}/icon-src.png"
+if [[ "$iconSrcFile" -nt "${iconDst}/icon-ios-1024@1x.png" || "$iconSrcFile" -nt "${iconDst}/icon-android-ldpi.png" ]]; then
+    scripts/generate_icons.sh "$iconSrcFile" "$iconDst"
 else
     echo No need to generate icons
 fi

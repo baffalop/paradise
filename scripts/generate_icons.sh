@@ -22,9 +22,11 @@ for s in $iosSizes; do
 done
 
 # android
-# convert "$source" -resize 36x36!   -unsharp 1x4 "Icon-ldpi.png"
-# convert "$source" -resize 48x48!   -unsharp 1x4 "Icon-mdpi.png"
-# convert "$source" -resize 72x72!   -unsharp 1x4 "Icon-hdpi.png"
-# convert "$source" -resize 96x96!   -unsharp 1x4 "Icon-xhdpi.png"
-# convert "$source" -resize 144x144! -unsharp 1x4 "Icon-xxhdpi.png"
-# convert "$source" -resize 192x192! -unsharp 1x4 "Icon-xxxhdpi.png"
+androidSizes="ldpi:36 mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192"
+
+for s in $androidSizes; do
+    name=${s%:*}
+    size=${s#*:}
+
+    convert "$source" -resize "${size}x${size}!" -unsharp 1x4 "$dst/icon-android-${name}.png"
+done
