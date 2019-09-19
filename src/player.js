@@ -48,7 +48,7 @@ class Player extends Eventful {
 
       if (typeof callback === 'function') callback(next)
 
-      this.emit('blockTransition', {name: next.src})
+      this.emit('blockTransition', {name: next.src, remaining: this.seq.length})
     }
 
     if (this.seq.length > 0) this.seq[this.seq.length - 1].setUpstream(this).start()
@@ -129,9 +129,6 @@ class Player extends Eventful {
    */
   handleEvent (type, emitter, data = {}) {
     switch (type) {
-      case 'firstPlay':
-        this.emit('blockLaunch', {remaining: this.seq.length})
-        break
       case 'tail':
         this.startNextBlock(data)
         break

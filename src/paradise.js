@@ -100,8 +100,6 @@ class Paradise extends Eventful {
 
     this.log('new Player initialised')
 
-    this.timeline.prepare(blocks.length - 1)
-
     if (!usingRetrievedPlaylist) {
       this.store.savePlaylist(this.player)
       this.skipFirstSlide = false
@@ -116,10 +114,12 @@ class Paradise extends Eventful {
       if (!this.playing) {
         this.playing = true
         this.playPauseButton.classList.add('pause')
+        this.timeline.play()
         this.player.play()
       } else {
         this.playing = false
         this.playPauseButton.classList.remove('pause')
+        this.timeline.pause()
         this.player.pause()
       }
     })
@@ -236,9 +236,6 @@ class Paradise extends Eventful {
    */
   handleEvent (type, emitter, data = {}) {
     switch (type) {
-      case 'blockLaunch':
-        this.timeline.progress(data.remaining)
-        break
       case 'tail':
         this.store.savePlaylist(this.player)
         break
@@ -250,6 +247,7 @@ class Paradise extends Eventful {
         break
       case 'blockTransition':
         this.titles.transition(data.name)
+        this.playing ? this.timeline.progress(data.remaining) : this.timeline.prepare(data.remaining)
         break
       case 'sequenceEnd':
         this.resetPlayer()

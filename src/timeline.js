@@ -4,6 +4,7 @@ class Timeline {
    */
   constructor (numberOfFragments) {
     this.numberOfFragments = numberOfFragments
+    this.index = 0
     this.container = document.getElementById('timeline')
     this.build()
   }
@@ -27,22 +28,30 @@ class Timeline {
    * @param {number} fragmentsRemaining
    */
   prepare (fragmentsRemaining) {
-    const endIndex = this.calculateIndex(fragmentsRemaining) + 1
-    this.blips.slice(0, endIndex).map(blip => blip.classList.add('on'))
+    this.index = this.calculateIndex(fragmentsRemaining)
+    this.blips.slice(0, this.index + 1).map(blip => blip.classList.add('on'))
   }
 
   /**
    * @param {number} fragmentsRemaining
    */
   progress (fragmentsRemaining) {
-    const index = this.calculateIndex(fragmentsRemaining)
+    this.index = this.calculateIndex(fragmentsRemaining)
 
-    for (const blip of this.blips.slice(0, index)) {
+    for (const blip of this.blips.slice(0, this.index)) {
       blip.classList.add('on')
       blip.classList.remove('current')
     }
 
-    this.blips[index].className = 'blip on current'
+    this.blips[this.index].className = 'blip on current'
+  }
+
+  play () {
+    this.blips[this.index].classList.add('current')
+  }
+
+  pause () {
+    this.blips[this.index].classList.remove('current')
   }
 
   /**
