@@ -9,10 +9,9 @@ class Timeline {
   }
 
   build () {
-    const blip = document.createElement('div')
-    blip.className = 'blip'
-
     for (let i = 0; i < this.numberOfFragments; i++) {
+      const blip = document.createElement('div')
+      blip.className = 'blip'
       this.container.appendChild(blip)
     }
 
