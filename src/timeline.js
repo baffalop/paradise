@@ -32,3 +32,5 @@ class Timeline {
     this.container.innerHTML = ''
   }
 }
+
+export default Timeline
