@@ -98,6 +98,8 @@ class Paradise extends Eventful {
 
     this.log('new Player initialised')
 
+    this.timeline.prepare(blocks.length - 1)
+
     if (!usingRetrievedPlaylist) {
       this.store.savePlaylist(this.player)
       this.skipFirstSlide = false
@@ -238,6 +240,7 @@ class Paradise extends Eventful {
     this.playing = false
     this.playPauseButton.classList.remove('pause')
 
+    this.timeline.reset(playlistLength || audioData.playlistLength)
     this.initPlayer(playlistLength)
   }
 
