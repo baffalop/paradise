@@ -39,6 +39,11 @@ class Store {
    * @param {Number} position
    */
   savePosition (position) {
+    if (position < 0) {
+      this.log('not saving negative position')
+      return
+    }
+
     this.storage.setItem('position', position.toString())
     this.log(`saved position: ${position}`)
   }
