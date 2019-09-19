@@ -228,7 +228,7 @@ class Paradise extends Eventful {
         this.resetPlayer()
         window.setTimeout(
           () => this.swipe.slide(3, this.autoSlideSpeed),
-          4000
+          2000
         )
     }
   }
