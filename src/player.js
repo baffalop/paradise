@@ -86,6 +86,15 @@ class Player extends Eventful {
     this.playQueue.map(block => block.skip(this.skipTime * mul))
   }
 
+  skipBlock () {
+    if (this.isOverlapping()) {
+      this.stopOverlap(this.playQueue[0].skipToTheEnd())
+      return
+    }
+
+    this.playQueue[0].skipToTheEnd()
+  }
+
   /**
    * Is more than one audio element playing?
    *

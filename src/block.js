@@ -102,6 +102,10 @@ class Block extends Eventful {
     this.emit('skipped')
   }
 
+  skipToTheEnd () {
+    this.seekTo(this.media.getDuration() - this.tailOffset - 3)
+  }
+
   /**
    * Set a position to skip to immediately on media running
    *

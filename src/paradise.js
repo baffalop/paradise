@@ -25,9 +25,11 @@ class Paradise extends Eventful {
     this.skipFirstSlide = true
 
     // for unlocking developer options. See swipeListener()
+    this.unlockedDev = false
     this.devUnlockSlideIndex = 1
     this.devUnlockCount = 0
     this.devUnlockTargetCount = 6
+    this.skipHoldTimeout = null
 
     this.autoSlideSpeed = 1100
     this.debounceTime = 100
@@ -188,8 +190,33 @@ class Paradise extends Eventful {
   }
 
   unlockDev () {
+    if (!this.unlockedDev) {
+      const ffw = document.getElementsByClassName('ffw')[0]
+
+      ffw.addEventListener('touchstart', () => {
+        if (!this.skipHoldTimeout) {
+          this.skipHoldTimeout = window.setTimeout(() => {
+            if (this.playing) this.player.skipBlock()
+          }, 2000)
+        }
+      })
+
+      document.addEventListener('touchend', () => {
+        if (this.skipHoldTimeout) {
+          window.clearTimeout(this.skipHoldTimeout)
+          this.skipHoldTimeout = null
+        }
+      })
+    }
+
+    this.unlockedDev = true
+
     navigator.notification.confirm(
-      'What would you like to do?',
+      `You have enabled developer mode.
+      
+      This allows you to skip to the end of an audio fragment by holding down the skip forward button for 2 seconds (while audio is playing).
+      
+      Would you also like to:`,
       index => {
         if (index === 1) {
           this.resetPlayer()
