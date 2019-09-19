@@ -120,6 +120,9 @@ class Player extends Eventful {
    */
   handleEvent (type, emitter, data = {}) {
     switch (type) {
+      case 'firstPlay':
+        this.emit('blockLaunch', {remaining: this.seq.length})
+        break
       case 'tail':
         this.startNextBlock(data)
         break
