@@ -24,6 +24,7 @@ class Block extends Eventful {
     this.tailReached = false
     this.overlapping = false
     this.lastPosition = 0
+    this.hasBeenPlayed = false
 
     this.timeUpdateInterval = 100
     this.timeUpdateCount = 0
@@ -55,6 +56,11 @@ class Block extends Eventful {
     }
 
     this.media.play()
+
+    if (!this.hasBeenPlayed) {
+      this.emit('firstPlay')
+      this.hasBeenPlayed = true
+    }
   }
 
   pause () {

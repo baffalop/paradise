@@ -6,6 +6,7 @@ import Shuffler from 'shuffler'
 import Store from 'store'
 import Titles from 'titles'
 import FastClick from 'fastclick'
+import Timeline from 'timeline'
 
 /**
  * Top-level class for the app, instantiated once on app launch. Deals with the DOM, and owns the Player.
@@ -17,6 +18,7 @@ class Paradise extends Eventful {
     super()
     this.store = new Store()
     this.titles = new Titles()
+    this.timeline = new Timeline(audioData.playlistLength)
 
     this.playing = false
     this.active = false
@@ -205,6 +207,9 @@ class Paradise extends Eventful {
    */
   handleEvent (type, emitter, data = {}) {
     switch (type) {
+      case 'blockLaunch':
+        this.timeline.progress(data.remaining)
+        break
       case 'tail':
         this.store.savePlaylist(this.player)
         break
