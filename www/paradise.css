@@ -217,7 +217,7 @@ p {
     width: 5px;
     background-color: #ddd;
     transition-property: background-color, height, width;
-    transition-duration: 250ms;
+    transition-duration: 400ms;
     transition-timing-function: ease-in-out;
 }
 
