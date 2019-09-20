@@ -38,8 +38,8 @@
       "cordova-plugin-dialogs": {}
     },
     "platforms": [
-      "ios",
-      "android"
+      "android",
+      "ios"
     ]
   },
   "devDependencies": {
