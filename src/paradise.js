@@ -191,22 +191,14 @@ class Paradise extends Eventful {
 
   unlockDev () {
     if (!this.unlockedDev) {
-      const ffw = document.getElementsByClassName('ffw')[0]
-
-      ffw.addEventListener('touchstart', () => {
-        if (!this.skipHoldTimeout) {
-          this.skipHoldTimeout = window.setTimeout(() => {
-            if (this.playing) this.player.skipBlock()
-          }, 2000)
-        }
-      })
-
-      document.addEventListener('touchend', () => {
-        if (this.skipHoldTimeout) {
-          window.clearTimeout(this.skipHoldTimeout)
-          this.skipHoldTimeout = null
-        }
-      })
+      document.getElementsByClassName('ffw')[0]
+        .addEventListener('touchstart', () => {
+          if (!this.skipHoldTimeout) {
+            this.skipHoldTimeout = window.setTimeout(() => {
+              if (this.playing) this.player.skipBlock()
+            }, 2000)
+          }
+        })
     }
 
     this.unlockedDev = true
@@ -273,6 +265,24 @@ class Paradise extends Eventful {
     this.setButtonClick('playpause', this.playPause.bind(this))
     this.setButtonClick('ffw', this.skipForward.bind(this))
     this.setButtonClick('rew', this.skipBack.bind(this))
+
+    const rew = document.getElementsByClassName('rew')[0]
+
+    rew.addEventListener('touchstart', () => {
+      if (!this.skipHoldTimeout) {
+        this.skipHoldTimeout = window.setTimeout(() => {
+          if (this.playing) this.playPause()
+          this.resetPlayer()
+        }, 2000)
+      }
+    })
+
+    document.addEventListener('touchend', () => {
+      if (this.skipHoldTimeout) {
+        window.clearTimeout(this.skipHoldTimeout)
+        this.skipHoldTimeout = null
+      }
+    })
   }
 
   /**
