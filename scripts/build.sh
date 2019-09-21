@@ -14,7 +14,7 @@ fi
 # generate splashscreen
 screenDst='res/screen/'
 screenFile="${screenDst}/splashscreen.png"
-if [[ "$screenFile" -nt "${screenDst}/Default@2x~universal~anyany.png" ]]; then
+if [[ "$screenFile" -nt "${screenDst}/Default@2x~universal~anyany.png" || "$screenFile" -nt "${screenDst}/android-port-xhdpi.png" ]]; then
     scripts/generate_splashscreen.sh "$screenFile" "$screenDst"
 else
     echo No need to generate splashscreen

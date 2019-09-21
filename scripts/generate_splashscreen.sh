@@ -25,3 +25,17 @@ for s in $iosSizes; do
         convert "$source" -resize "x${h}" -unsharp 1x4 -gravity center -crop "${w}x${h}+0+0" +repage "$dst/$name.png"
     fi
 done
+
+androidSizes='ldpi:200x320 mdpi:320x480 hdpi:480x800 xhdpi:720x1280'
+
+for s in $androidSizes; do
+    name=${s%:*}
+    dim=${s#*:}
+    w=${dim%x*}
+    h=${dim#*x}
+
+    # portrait
+    convert "$source" -resize "x${h}" -unsharp 1x4 -gravity center -crop "${w}x${h}+0+0" +repage "${dst}/android-port-${name}.png"
+    # landscape
+    convert "$source" -resize "x${h}" -unsharp 1x4 -gravity center -crop "${w}x${h}+0+0" +repage -rotate '-90' "${dst}/android-land-${name}.png"
+done
