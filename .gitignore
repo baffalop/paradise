@@ -10,4 +10,8 @@ www/js/index.js
 
 # Script-generated
 res/icon/icon-ios-*
+res/icon/icon-android-*
 res/screen/Default*
+res/screen/android-*
+
+**/audio/
