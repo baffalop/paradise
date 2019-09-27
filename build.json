@@ -22,5 +22,17 @@
         "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
       ]
     }
+  },
+  "android": {
+    "debug": {
+      "keystore": "../keystores/paradise.keystore",
+      "alias": "paradise",
+      "keystoreType": ""
+    },
+    "release": {
+      "keystore": "../keystores/paradise.keystore",
+      "alias": "paradise",
+      "keystoreType": ""
+    }
   }
 }
