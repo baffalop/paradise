@@ -7,7 +7,7 @@
     <author email="nikita.gaidakov@gmail.com" href="http://github.com/baffalop">
         Nikita Gaidakov
     </author>
-    <content src="index.html" />
+    <content src="dist/index.html" />
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
 
