@@ -1,11 +1,30 @@
-.idea/
+.DS_Store
+node_modules
+/dist
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Cordova
 platforms/
 plugins/
-node_modules/
-**/dummy/
-**/.ds_store
 
-# Webpack-generated
+# Compiled
 www/js/index.js
 
 # Script-generated
