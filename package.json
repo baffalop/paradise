@@ -26,8 +26,7 @@
     "es6-promise-plugin": "^4.2.2",
     "fastclick": "^1.0.6",
     "media": "^0.2.1",
-    "vue": "^2.6.10",
-    "vue-swipe": "^2.4.0"
+    "vue": "^2.6.10"
   },
   "cordova": {
     "plugins": {
