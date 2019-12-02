@@ -51,29 +51,6 @@ p {
     margin-block-end: 0.6em;
 }
 
-/* Swipe boilerplate */
-
-.swipe {
-    overflow: hidden;
-    visibility: hidden;
-    position: relative;
-}
-
-.swipe-wrap {
-    overflow: hidden;
-    position: relative;
-}
-
-.swipe-wrap > div {
-    position: relative;
-    float: left;
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 /* slides */
 
 .controls-page {
