@@ -29,7 +29,7 @@
 </template>
 
 <script>
-  import Swipe from 'swipejs'
+  import Swipe from './Swipe'
 
   export default {
     name: 'Paradise',
