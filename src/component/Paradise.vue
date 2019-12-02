@@ -21,7 +21,7 @@
           <em>I Don&rsquo;t Know Where Paradise Is</em> was written and created by Benny Nemerofsky Ramsay to accompany a series of sculptures, collages, and photographs produced as doctoral research at the Edinburgh College of Art. Narration by Adeniyi Adelakun, Adrian Rifkin, Alberta Whittle, Benny Nemerofsky Ramsay, Gert Hekma, Joke Ballintijn, Mattias Duyves, Oskar Kirk Hansen, Thomas Waugh, Tomi Paasonen, and Will Stringer. Composition and sound design by Johannes Malfatti. App programming by Nikita Gaidakov. Sound recordings by Nikita Gaidakov and Jack Walker. <em>I Don&rsquo;t Know Where Paradise Is</em> was supported through funding by the <em>Cruising the Seventies: Unearthing Pre-HIV/AIDS Queer Sexual Cultures</em> Research Project at the Edinburgh College of Art, the Social Sciences and Humanities Research Council of Canada, and the Canada Council for the Arts.
         </p>
         <p>
-          <img src="img/logos.png" class="logos" alt="Sponsor logos" />
+          <img src="./../assets/img/logos.png" class="logos" alt="Sponsor logos" />
         </p>
       </div>
     </div>
@@ -29,9 +29,10 @@
 </template>
 
 <script>
-  import Swipe from 'swipe'
+  import Swipe from 'swipejs'
 
   export default {
+    name: 'Paradise',
     components: { Swipe },
   }
 </script>
@@ -48,7 +49,7 @@
   }
 
   .title {
-    background: url(img/title.png) no-repeat center;
+    background: url(./../assets/img/title.png) no-repeat center;
     background-size: contain;
     height: 80vh;
     width: 80%;
