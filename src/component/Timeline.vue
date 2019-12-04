@@ -4,7 +4,10 @@
             class="blip"
             v-for="index in count"
             :key="index"
-            :class="{ lit: index <= current, active: playing && index === current }"
+            :class="{
+              lit: index - 1 <= position,
+              active: playing && index - 1 === position,
+            }"
         />
     </div>
 </template>
@@ -17,7 +20,7 @@
         type: Number,
         required: true,
       },
-      current: {
+      position: {
         type: Number,
         required: false,
         default: 0,

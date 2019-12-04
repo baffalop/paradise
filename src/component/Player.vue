@@ -1,6 +1,6 @@
 <template>
   <div class="player">
-    <timeline :count="playlistCount" :current="currentIndex" :playing="playing" />
+    <timeline :count="playlistCount" :position="currentIndex" :playing="playing" />
     <controls
         :playing="playing"
         @toggle-play="togglePlay()"
@@ -28,7 +28,7 @@
         this.currentIndex --
       },
       ffw () {
-        if (this.currentIndex >= this.playlistCount) return
+        if (this.currentIndex >= this.playlistCount - 1) return
         this.currentIndex ++
       },
       togglePlay () {
