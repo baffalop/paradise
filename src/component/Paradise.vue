@@ -4,6 +4,8 @@
       <div class="title"></div>
     </div>
 
+    <player />
+
     <div>
       <div class="text">
         <p>
@@ -30,10 +32,11 @@
 
 <script>
   import Swipe from './Swipe'
+  import Player from './Player'
 
   export default {
     name: 'Paradise',
-    components: { Swipe },
+    components: { Swipe, Player },
   }
 </script>
 
