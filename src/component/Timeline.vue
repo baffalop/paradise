@@ -2,7 +2,7 @@
     <div class="timeline">
         <div
             class="blip"
-            v-for="index in total"
+            v-for="index in count"
             :key="index"
             :class="{ lit: index <= current, active: playing && index === current }"
         />
@@ -13,7 +13,7 @@
   export default {
     name: "Timeline",
     props: {
-      total: {
+      count: {
         type: Number,
         required: true,
       },

@@ -1,6 +1,6 @@
 <template>
   <div class="player">
-    <timeline :total="playlistCount" :current="currentIndex" :playing="playing" />
+    <timeline :count="playlistCount" :current="currentIndex" :playing="playing" />
     <controls
         :playing="playing"
         @toggle-play="togglePlay()"
