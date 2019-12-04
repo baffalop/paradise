@@ -28,7 +28,7 @@
         this.currentIndex --
       },
       ffw () {
-        if (this.currentIndex >= this.playlistCount - 1) return
+        if (this.currentIndex >= this.playlistCount) return
         this.currentIndex ++
       },
       togglePlay () {
