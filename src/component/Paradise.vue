@@ -34,12 +34,14 @@
   import Swipe from './Swipe'
   import Player from './Player'
 
+  const SLIDE_SPEED_SLOW = 1400
+
   export default {
     name: 'Paradise',
     components: { Swipe, Player },
     methods: {
       onSequenceEnd () {
-        this.$refs.swipe.goto(3, 1200)
+        this.$refs.swipe.goto(3, SLIDE_SPEED_SLOW)
       }
     },
   }
