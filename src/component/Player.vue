@@ -39,7 +39,11 @@
         this.currentIndex --
       },
       ffw () {
-        if (this.currentIndex >= this.playlistCount - 1) return
+        if (this.currentIndex === this.playlist.length - 1) {
+          this.$emit('sequence-end')
+          this.currentIndex = 0
+          this.playing = false
+        }
         this.currentIndex ++
       },
       togglePlay () {
