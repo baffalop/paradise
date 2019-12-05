@@ -42,7 +42,7 @@
       },
       goto (index, dur) {
         if (this.swipe === null) return
-        this.swipe.goto(index, dur)
+        this.swipe.slide(index, dur)
       },
       onSwipe (index, elem, dir) {
         this.$emit('swipe', {index, elem, dir})
