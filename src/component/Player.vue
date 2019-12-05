@@ -1,6 +1,7 @@
 <template>
   <div class="player">
-    <timeline :count="playlistCount" :position="currentIndex" :playing="playing" />
+    <fragment-title :name="playlist[currentIndex]" />
+    <timeline :count="playlist.length" :position="currentIndex" :playing="playing" />
     <controls
       :playing="playing"
       @toggle-play="togglePlay()"
@@ -13,12 +14,22 @@
 <script>
   import Timeline from './Timeline'
   import Controls from './Controls'
+  import FragmentTitle from "./FragmentTitle"
 
   export default {
     name: 'Player',
-    components: {Controls, Timeline },
+    components: { FragmentTitle, Timeline, Controls, },
     data: () => ({
-      playlistCount: 8,
+      playlist: [
+        'intro',
+        'bathhouse',
+        'biographies',
+        'clocks',
+        'duster',
+        'faggot',
+        'ficus',
+        'exlibris',
+      ],
       currentIndex: 0,
       playing: false,
     }),
