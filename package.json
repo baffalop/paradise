@@ -27,7 +27,8 @@
     "fastclick": "^1.0.6",
     "media": "^0.2.1",
     "swipejs": "^2.2.14",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vue-long-click": "0.0.4"
   },
   "cordova": {
     "plugins": {
