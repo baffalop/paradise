@@ -3,9 +3,8 @@
     <transition name="swipe">
       <div
         class="title"
-        v-for="(title, i) in titles"
-        :key="i"
-        v-show="i === index"
+        v-for="title in [name]"
+        :key="title"
         :style="{ backgroundImage: imgFromName(title) }"
       />
     </transition>
@@ -19,16 +18,6 @@
       name: {
         type: String,
         required: true,
-      },
-    },
-    data: () => ({
-      index: 0,
-      titles: [this.name, ''],
-    }),
-    watch: {
-      name (newName) {
-        this.index = ++this.index % 2
-        this.titles[this.index] = newName
       },
     },
     methods: {
