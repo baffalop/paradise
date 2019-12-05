@@ -4,8 +4,6 @@
       <div class="title"></div>
     </div>
 
-    <player @sequence-end="onSequenceEnd()" />
-
     <div>
       <div class="text">
         <p>
@@ -16,6 +14,8 @@
         </p>
       </div>
     </div>
+
+    <player @sequence-end="onSequenceEnd()" />
 
     <div>
       <div class="text">
