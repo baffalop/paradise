@@ -2,10 +2,10 @@
   <div class="player">
     <timeline :count="playlistCount" :position="currentIndex" :playing="playing" />
     <controls
-        :playing="playing"
-        @toggle-play="togglePlay()"
-        @rew="rew()"
-        @ffw="ffw()"
+      :playing="playing"
+      @toggle-play="togglePlay()"
+      @rew="rew()"
+      @ffw="ffw()"
     />
   </div>
 </template>
