@@ -1,12 +1,7 @@
 <template>
   <div class="fragment-container">
     <transition name="swipe">
-      <div
-        class="title"
-        v-for="name in [name]"
-        :key="name"
-        :class="name"
-      />
+      <div class="title" :key="name" :class="name" />
     </transition>
   </div>
 </template>
