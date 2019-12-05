@@ -43,6 +43,7 @@
           this.$emit('sequence-end')
           this.currentIndex = 0
           this.playing = false
+          return
         }
         this.currentIndex ++
       },
