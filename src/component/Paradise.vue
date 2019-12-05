@@ -1,10 +1,10 @@
 <template>
-  <swipe>
+  <swipe ref="swipe">
     <div>
       <div class="title"></div>
     </div>
 
-    <player />
+    <player @sequence-end="onSequenceEnd()" />
 
     <div>
       <div class="text">
@@ -37,6 +37,11 @@
   export default {
     name: 'Paradise',
     components: { Swipe, Player },
+    methods: {
+      onSequenceEnd () {
+        this.$refs.swipe.goto(3, 1200)
+      }
+    },
   }
 </script>
 
