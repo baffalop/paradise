@@ -45,7 +45,7 @@
         this.swipe.slide(index, dur)
       },
       onSwipe (index, elem, dir) {
-        this.$emit('swipe', {index, elem, dir})
+        this.$emit('swiping', {index, elem, dir})
       },
       onTransitionEnd (index, elem) {
         this.$emit('transition-end', {index, elem})

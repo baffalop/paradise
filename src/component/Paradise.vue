@@ -1,5 +1,5 @@
 <template>
-  <swipe ref="swipe">
+  <swipe ref="swipe" @swiping="checkUnlock($event)">
     <div>
       <div class="title"></div>
     </div>
@@ -35,14 +35,53 @@
   import Player from './Player'
 
   const SLIDE_SPEED_SLOW = 1400
+  const UNLOCK_TIMEOUT = 800
 
   export default {
     name: 'Paradise',
     components: { Swipe, Player },
+    data: () => ({
+      unlockCount: 0,
+      unlockTimeout: null,
+      devMode: false,
+    }),
+    computed: {
+      nextUnlockIndex () {
+        return (this.unlockCount + 1) % 2
+      }
+    },
     methods: {
       onSequenceEnd () {
         this.$refs.swipe.goto(3, SLIDE_SPEED_SLOW)
-      }
+      },
+
+      /**
+       * Swipe alternately between 0th and 1st slide to unlock devMode
+       *
+       * @param {Number} index
+       * @param {Number} dir
+       */
+      checkUnlock ({index, dir}) {
+        if (index !== this.nextUnlockIndex || -dir !== (this.nextUnlockIndex * 2) - 1) {
+          return
+        }
+
+        if (++this.unlockCount === 6) {
+          alert('You have unlocked dev mode!')
+          this.devMode = true
+          this.unlockCount = 0
+          return
+        }
+
+        console.log(`unlockCount = ${this.unlockCount}`)
+
+        if (this.unlockTimeout) {
+          window.clearTimeout(this.unlockTimeout)
+          this.unlockTimeout = null
+        }
+
+        this.unlockTimeout = window.setTimeout(() => this.unlockCount = 0, UNLOCK_TIMEOUT)
+      },
     },
   }
 </script>
