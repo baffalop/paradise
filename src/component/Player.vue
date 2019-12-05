@@ -14,7 +14,7 @@
 <script>
   import Timeline from './Timeline'
   import Controls from './Controls'
-  import FragmentTitle from "./FragmentTitle"
+  import FragmentTitle from './FragmentTitle'
 
   export default {
     name: 'Player',
