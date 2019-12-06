@@ -4,9 +4,12 @@
     <timeline :count="playlist.length" :position="currentIndex" :playing="playing" />
     <controls
       :playing="playing"
-      @toggle-play="togglePlay()"
-      @rew="rew()"
-      @ffw="ffw()"
+      :dev-mode="devMode"
+      @toggle-play="togglePlay"
+      @rew="rew"
+      @ffw="ffw"
+      @long-rew="reset"
+      @long-ffw="skipToEnd"
     />
   </div>
 </template>
@@ -19,6 +22,13 @@
   export default {
     name: 'Player',
     components: { FragmentTitle, Timeline, Controls, },
+    props: {
+      devMode: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+    },
     data: () => ({
       playlist: [
         'intro',
@@ -34,6 +44,9 @@
       playing: false,
     }),
     methods: {
+      togglePlay () {
+        this.playing = !this.playing
+      },
       rew () {
         if (this.currentIndex <= 0) return
         this.currentIndex --
@@ -47,9 +60,12 @@
         }
         this.currentIndex ++
       },
-      togglePlay () {
-        this.playing = !this.playing
-      }
+      reset () {
+        this.currentIndex = 0
+      },
+      skipToEnd () {
+        this.currentIndex = this.playlist.length - 1
+      },
     },
   }
 </script>

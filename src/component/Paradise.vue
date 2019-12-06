@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <player @sequence-end="onSequenceEnd()" />
+    <player :dev-mode="devMode" @sequence-end="onSequenceEnd()" />
 
     <div>
       <div class="text">

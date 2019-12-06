@@ -1,28 +1,52 @@
 <template>
   <div class="controls">
-    <div class="controlButton rew" @click="$emit('rew')" />
+    <div
+      class="controlButton rew"
+      @click="$emit('rew')"
+      v-longclick="longRew"
+    />
     <div
       @click="$emit('toggle-play')"
       :class="playing ? 'pause' : 'play'"
       class="controlButton playpause"
     />
-    <div class="controlButton ffw" @click="$emit('ffw')" />
+    <div
+      class="controlButton ffw"
+      @click="$emit('ffw')"
+      v-longclick="longFfw"
+    />
   </div>
 </template>
 
 <script>
+  import longClickDirective from 'vue-long-click/src/directives/longclick'
+
+  const LONG_CLICK_SPEED = 2000
+
   export default {
     name: 'controls',
+    directives: {
+      longclick: longClickDirective({delay: LONG_CLICK_SPEED}),
+    },
     props: {
       playing: {
         type: Boolean,
         required: true,
       },
+      devMode: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
     },
     methods: {
-      rew () {
-        this.$emit('rew')
-      }
+      longRew () {
+        this.$emit('long-rew')
+      },
+      longFfw () {
+        if (!this.devMode) return
+        this.$emit('long-ffw')
+      },
     },
   }
 </script>
