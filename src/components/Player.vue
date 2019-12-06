@@ -61,6 +61,7 @@
         this.currentIndex ++
       },
       reset () {
+        this.playing = false
         this.currentIndex = 0
       },
       skipToEnd () {
