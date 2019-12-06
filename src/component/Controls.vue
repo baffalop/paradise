@@ -51,21 +51,17 @@
         callback()
       },
       rew () {
-        console.log('rew')
         this.$emit('rew')
       },
       longRew () {
         this.suppressClick = true
-        console.log('longRew')
         this.$emit('long-rew')
       },
       ffw () {
-        console.log('ffw')
         this.$emit('ffw')
       },
       longFfw () {
         this.suppressClick = true
-        console.log('longFfw')
         if (!this.devMode) return
         this.$emit('long-ffw')
       },
