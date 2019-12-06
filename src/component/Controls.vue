@@ -1,17 +1,17 @@
 <template>
   <div class="controls">
     <div
-      class="controlButton rew"
+      class="button rew"
       @click="onClick(rew)"
       v-longclick="longRew"
     />
     <div
       @click="$emit('toggle-play')"
       :class="playing ? 'pause' : 'play'"
-      class="controlButton playpause"
+      class="button playpause"
     />
     <div
-      class="controlButton ffw"
+      class="button ffw"
       @click="onClick(ffw)"
       v-longclick="longFfw"
     />
@@ -81,7 +81,7 @@
     justify-content: space-around;
   }
 
-  .controlButton {
+  .button {
     cursor: pointer;
     height: 80px;
     min-width: 80px;
@@ -90,7 +90,7 @@
     transition: opacity 80ms ease-in 100ms;
   }
 
-  .controlButton:active {
+  .button:active {
     transition: none;
     opacity: 0.5;
   }
