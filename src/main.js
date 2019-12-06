@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Paradise from './component/Paradise'
+import Paradise from './components/Paradise'
 
 new Vue({
   el: '#paradise',
