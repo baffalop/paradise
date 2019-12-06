@@ -42,7 +42,7 @@
     components: { Swipe, Player },
     data: () => ({
       unlockCount: 0,
-      unlockTimeout: null,
+      unlockTimer: null,
       devMode: false,
     }),
     computed: {
@@ -75,12 +75,12 @@
 
         console.log(`unlockCount = ${this.unlockCount}`)
 
-        if (this.unlockTimeout) {
-          window.clearTimeout(this.unlockTimeout)
-          this.unlockTimeout = null
+        if (this.unlockTimer) {
+          window.clearTimeout(this.unlockTimer)
+          this.unlockTimer = null
         }
 
-        this.unlockTimeout = window.setTimeout(() => this.unlockCount = 0, UNLOCK_TIMEOUT)
+        this.unlockTimer = window.setTimeout(() => this.unlockCount = 0, UNLOCK_TIMEOUT)
       },
     },
   }
