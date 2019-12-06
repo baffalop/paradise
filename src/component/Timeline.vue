@@ -6,7 +6,7 @@
       :key="index"
       :class="{
         lit: index - 1 <= position,
-        active: playing && index - 1 === position,
+        active: playing && (index - 1 === position),
       }"
     />
   </div>
