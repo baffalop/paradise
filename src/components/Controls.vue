@@ -3,6 +3,7 @@
     <div
       class="button rew"
       @click="onClick(rew)"
+      @mouseout="onMouseout"
       v-longclick="longRew"
     />
     <div
@@ -13,6 +14,7 @@
     <div
       class="button ffw"
       @click="onClick(ffw)"
+      @mouseout="onMouseout"
       v-longclick="longFfw"
     />
   </div>
@@ -49,6 +51,9 @@
           return
         }
         callback()
+      },
+      onMouseout () {
+        this.suppressClick = false
       },
       rew () {
         this.$emit('rew')
