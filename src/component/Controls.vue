@@ -2,7 +2,7 @@
   <div class="controls">
     <div
       class="controlButton rew"
-      @click="$emit('rew')"
+      @click="onClick(rew)"
       v-longclick="longRew"
     />
     <div
@@ -12,7 +12,7 @@
     />
     <div
       class="controlButton ffw"
-      @click="$emit('ffw')"
+      @click="onClick(ffw)"
       v-longclick="longFfw"
     />
   </div>
@@ -26,7 +26,7 @@
   export default {
     name: 'controls',
     directives: {
-      longclick: longClickDirective({delay: LONG_CLICK_SPEED}),
+      longclick: longClickDirective({delay: LONG_CLICK_SPEED, interval: 0}),
     },
     props: {
       playing: {
@@ -39,11 +39,33 @@
         default: false,
       },
     },
+    data: () => ({
+      suppressClick: false,
+    }),
     methods: {
+      onClick (callback) {
+        if (this.suppressClick) {
+          this.suppressClick = false
+          return
+        }
+        callback()
+      },
+      rew () {
+        console.log('rew')
+        this.$emit('rew')
+      },
       longRew () {
+        this.suppressClick = true
+        console.log('longRew')
         this.$emit('long-rew')
       },
+      ffw () {
+        console.log('ffw')
+        this.$emit('ffw')
+      },
       longFfw () {
+        this.suppressClick = true
+        console.log('longFfw')
         if (!this.devMode) return
         this.$emit('long-ffw')
       },
