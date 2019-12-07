@@ -3,7 +3,9 @@
     <div
       class="button rew"
       @click="onClick(rew)"
-      @mouseout="onMouseout"
+      @mouseout="cancelClickOverride"
+      @touchcancel="cancelClickOverride"
+      @touchend="cancelClickOverride"
       v-longclick="longRew"
     />
     <div
@@ -14,7 +16,9 @@
     <div
       class="button ffw"
       @click="onClick(ffw)"
-      @mouseout="onMouseout"
+      @mouseout="cancelClickOverride"
+      @touchcancel="cancelClickOverride"
+      @touchend="cancelClickOverride"
       v-longclick="longFfw"
     />
   </div>
@@ -52,7 +56,7 @@
         }
         callback()
       },
-      onMouseout () {
+      cancelClickOverride () {
         this.suppressClick = false
       },
       rew () {
