@@ -1,5 +1,5 @@
 <template>
-  <swipe ref="swipe" @swiping="checkUnlock($event)">
+  <swipe-native ref="swipe">
     <div>
       <div class="title"></div>
     </div>
@@ -27,11 +27,11 @@
         </p>
       </div>
     </div>
-  </swipe>
+  </swipe-native>
 </template>
 
 <script>
-  import Swipe from './Swipe'
+  import SwipeNative from './SwipeNative'
   import Player from './Player'
 
   const SLIDE_SPEED_SLOW = 1400
@@ -39,7 +39,7 @@
 
   export default {
     name: 'Paradise',
-    components: { Swipe, Player },
+    components: { SwipeNative, Player },
     data: () => ({
       unlockCount: 0,
       unlockTimer: null,
