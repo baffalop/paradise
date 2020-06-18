@@ -36,9 +36,17 @@ class Paradise extends Eventful {
   }
 
   /**
-   * Do any DOM setup not dependent on deviceready, listen for deviceready event
+   * Do any setup not dependent on DOM ready, listen for DOM ready
    */
   listen () {
+    this.initPlayer()
+    document.addEventListener('DOMContentLoaded', this.init.bind(this));
+  }
+
+  /**
+   * Do DOM-dependent setup
+   */
+  init () {
     this.playPauseButton = document.getElementsByClassName('playpause')[0]
     this.swipe = new Swipe(document.getElementById('slider'), {
       draggable: true,
@@ -52,24 +60,6 @@ class Paradise extends Eventful {
         }
       } : null,
     })
-
-    document.addEventListener('deviceready', this.init.bind(this));
-  }
-
-  /**
-   * Do deviceready-dependent setup
-   */
-  init () {
-    window.screen.orientation.lock('portrait')
-      .then(
-      () => this.log('screen locked to portrait'),
-      reason => {
-        this.log('screen lock error...')
-        console.log(reason)
-      }
-    )
-
-    this.initPlayer()
 
     FastClick.attach(document.body)
     this.setupButtons()
