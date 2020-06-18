@@ -25,7 +25,7 @@ const audio = {
   },
 
   blockOpts: {
-    dir: window.audioBasePath + 'audio/',
+    dir: 'audio/',
     tail: 6,
   },
 
