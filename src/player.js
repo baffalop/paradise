@@ -44,7 +44,7 @@ class Player extends Eventful {
     const next = this.seq.pop()
     if (next) {
       this.playQueue.push(next)
-      if (!next.media) next.setUpstream(this).start()
+      if (!next.audio) next.setUpstream(this).start()
 
       if (typeof callback === 'function') callback(next)
 
@@ -111,7 +111,6 @@ class Player extends Eventful {
    * @param {function(): void} callback executed when the overlapping block has been stopped and released
    */
   stopOverlap (callback) {
-    this.playQueue[0].stop()
     this.addOneShotEvent('blockEnd', callback, this.playQueue[0])
   }
 
