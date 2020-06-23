@@ -192,23 +192,6 @@ class Paradise extends Eventful {
     }
 
     this.unlockedDev = true
-
-    navigator.notification.confirm(
-      `You have enabled developer mode.
-      
-      This allows you to skip to the end of an audio fragment by holding down the skip forward button for 2 seconds (while audio is playing).
-      
-      Would you also like to:`,
-      index => {
-        if (index === 1) {
-          this.resetPlayer()
-        } else if (index === 2) {
-          this.resetPlayer(audioData.fragments.pool.length + 3)
-        }
-      },
-      'Developer Mode',
-      ['Shuffle new playlist', 'Generate full playlist', 'Cancel']
-    )
   }
 
   /**
