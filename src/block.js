@@ -28,6 +28,7 @@ class Block extends Eventful {
     this.timeUpdateInterval = 100
     this.timeUpdateCount = 0
     this.saveTimeCount = 1000 / this.timeUpdateInterval
+    this.timeUpdateId = null
   }
 
   /**
@@ -45,16 +46,18 @@ class Block extends Eventful {
         this.startFrom = null
       }
       this.watchTime()
+      this.log('playing event')
       this.emit('playing')
     })
 
     this.audio.addEventListener('pause', () => {
-      this.log('Paused')
+      this.log('pause event')
       this.stopWatchingTime()
       this.emit('paused')
     })
 
     this.audio.addEventListener('ended', () => {
+      this.log('ended event')
       this.stopWatchingTime()
       this.emit('blockEnd')
     })
@@ -164,6 +167,11 @@ class Block extends Eventful {
       return
     }
 
+    if (typeof this.timeUpdateId === 'number') {
+      this.log('already watching time')
+      return
+    }
+
     this.timeUpdateId = window.setInterval(
       () => this.timeUpdate(this.audio.currentTime),
       this.timeUpdateInterval
@@ -174,7 +182,9 @@ class Block extends Eventful {
    * Clear the interval for timeUpdate
    */
   stopWatchingTime () {
+    this.log('stopping watching time')
     window.clearInterval(this.timeUpdateId)
+    this.timeUpdateId = null
   }
 
   /**
