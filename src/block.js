@@ -31,10 +31,29 @@ class Block extends Eventful {
     this.timeUpdateId = null
   }
 
+  preload () {
+    this.start()
+
+    this.play()
+      .then(() => {
+        this.pause()
+        this.log('preloaded')
+      })
+      .catch(reason => {
+        this.log('play error')
+        console.log(reason)
+      })
+  }
+
   /**
    * Initialise audio
    */
   start () {
+    if (typeof this.audio === 'object') {
+      this.log('already started')
+      return
+    }
+
     this.log('starting')
 
     this.audio = new Audio(this.dir + this.src + this.ext)
@@ -70,7 +89,7 @@ class Block extends Eventful {
       throw new Error('Audio not started')
     }
 
-    this.audio.play() // todo promise
+    return this.audio.play()
   }
 
   pause () {

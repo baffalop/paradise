@@ -32,6 +32,10 @@ class Player extends Eventful {
     this.tailOvershootThreshold = tailOvershootThreshold
   }
 
+  preload () {
+    this.seq.forEach(block => block.preload())
+  }
+
   /**
    * Move next block to play queue and return. Also start subsequent block in advance.
    * If a callback is provided, call with current before starting next.

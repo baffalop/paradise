@@ -22,6 +22,7 @@ class Paradise extends Eventful {
 
     this.playing = false
     this.active = false
+    this.preloaded = false
     this.skipFirstSlide = true
 
     // for unlocking developer options. See swipeListener()
@@ -106,6 +107,11 @@ class Paradise extends Eventful {
         this.playPauseButton.classList.add('pause')
         this.timeline.play()
         this.player.play()
+
+        if (!this.preloaded) {
+          this.player.preload()
+          this.preloaded = true
+        }
       } else {
         this.playing = false
         this.playPauseButton.classList.remove('pause')
