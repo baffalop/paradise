@@ -72,6 +72,7 @@
     width: 100%;
     scroll-snap-type: x mandatory;
     scroll-snap-stop: always;
+    -webkit-overflow-scrolling: touch;
     display: flex;
     flex-flow: row nowrap;
   }
