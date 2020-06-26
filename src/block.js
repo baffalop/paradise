@@ -101,7 +101,7 @@ class Block extends Eventful {
     if (pos < 0) return
 
     this.lastPosition = pos
-    this.emit('timeUpdate', { pos: pos })
+    this.emit('timeUpdate', { name: this.src, pos: pos })
     this.audio.pause()
   }
 
