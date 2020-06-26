@@ -59,6 +59,9 @@
     },
 
     methods: {
+      /**
+       * @param {VNode} node
+       */
       onSlideTransition (node) {
         console.log(`swipe transition: ${node.data.ref}`)
         this.checkUnlock(node)
@@ -69,7 +72,7 @@
       },
 
       /**
-       * Swipe alternately between 0th and 1st slide to unlock devMode
+       * Swipe alternately between title and description slides to unlock devMode
        *
        * @param {VNode} node
        */

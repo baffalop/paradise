@@ -64,6 +64,10 @@
         }
       },
 
+      /**
+       * @param {VNode} node
+       * @returns {boolean}
+       */
       isInView (node) {
         const boundingRect = node.elm.getBoundingClientRect()
         return boundingRect.left === 0
