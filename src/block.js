@@ -28,80 +28,108 @@ class Block extends Eventful {
     this.timeUpdateInterval = 100
     this.timeUpdateCount = 0
     this.saveTimeCount = 1000 / this.timeUpdateInterval
+    this.timeUpdateId = null
+  }
+
+  preload () {
+    this.start()
+
+    this.play()
+      .then(() => {
+        this.pause()
+        this.log('preloaded')
+      })
+      .catch(reason => {
+        this.log('play error')
+        console.log(reason)
+      })
   }
 
   /**
-   * Initialise media
+   * Initialise audio
    */
   start () {
+    if (typeof this.audio === 'object') {
+      this.log('already started')
+      return
+    }
+
     this.log('starting')
 
-    this.media = new Media(
-      this.dir + this.src + this.ext,
-      () => this.log('played through'),
-      e => {
-        this.log('error playing media')
-        console.log(e)
-      },
-      this.statusUpdate.bind(this)
-    )
+    this.audio = new Audio(this.dir + this.src + this.ext)
+    this.audio.preload = 'auto'
+
+    this.audio.addEventListener('playing', () => {
+      if (typeof this.startFrom === 'number') {
+        this.seekTo(this.startFrom)
+        this.startFrom = null
+      }
+      this.watchTime()
+      this.log('playing event')
+      this.emit('playing')
+    })
+
+    this.audio.addEventListener('pause', () => {
+      this.log('pause event')
+      this.stopWatchingTime()
+      this.emit('paused')
+    })
+
+    this.audio.addEventListener('ended', () => {
+      this.log('ended event')
+      this.stopWatchingTime()
+      this.emit('blockEnd')
+    })
 
     return this
   }
 
   play () {
-    if (!this.media) {
-      throw new Error('Media not started')
+    if (!this.audio) {
+      throw new Error('Audio not started')
     }
 
-    this.media.play()
+    return this.audio.play()
   }
 
   pause () {
-    if (!this.media) {
-      throw new Error('Media not started')
+    if (!this.audio) {
+      throw new Error('Audio not started')
     }
 
-    this.media.getCurrentPosition(
-      pos => {
-        if (pos < 0) return
-        this.lastPosition = pos
-        this.emit('timeUpdate', {position: pos})
-        this.media.pause()
-      }
-    )
-  }
+    const pos = this.audio.currentTime
+    if (pos < 0) return
 
-  stop () {
-    this.media.stop()
+    this.lastPosition = pos
+    this.emit('timeUpdate', {position: pos})
+    this.audio.pause()
   }
 
   /**
    * @param {Number} interval
    */
   skip (interval) {
-    this.media.getCurrentPosition(pos => {
-      const newPos = pos + interval
-      this.log(`skipping from ${pos} to ${newPos}`)
-      this.seekTo(newPos)
-      this.checkTail(newPos)
-    })
+    const pos = this.audio.currentTime
+    const newPos = pos + interval
+    this.log(`skipping from ${pos} to ${newPos}`)
+    this.seekTo(newPos)
+    this.checkTail(newPos)
   }
 
   /**
    * @param {Number} pos
    */
   seekTo (pos) {
-    this.media.seekTo(pos * 1000)
+    this.audio.currentTime = pos
     this.emit('skipped')
   }
 
   skipToTheEnd () {
-    this.seekTo(this.media.getDuration() - this.tailOffset - 3)
+    this.seekTo(this.audio.duration - this.tailOffset - 3)
   }
 
   /**
-   * Set a position to skip to immediately on media running
+   * Set a position to skip to immediately on audio running
    *
    * @param {Number} position
    */
@@ -145,45 +173,7 @@ class Block extends Eventful {
   }
 
   /**
-   * Callback for Media
-   *
-   * @param {Number} code
-   */
-  statusUpdate (code) {
-    let status = '-'
-    switch (code) {
-      case Media.MEDIA_NONE:
-        status = 'NONE'
-        break
-      case Media.MEDIA_STARTING:
-        status = 'STARTING'
-        break
-      case Media.MEDIA_RUNNING:
-        status = 'RUNNING'
-        if (typeof this.startFrom === 'number') {
-          this.seekTo(this.startFrom)
-          this.startFrom = null
-        }
-        this.watchTime()
-        this.emit('playing')
-        break
-      case Media.MEDIA_PAUSED:
-        status = 'PAUSED'
-        this.stopWatchingTime()
-        this.emit('paused')
-        break
-      case Media.MEDIA_STOPPED:
-        status = 'STOPPED'
-        this.stopWatchingTime()
-        this.media.release()
-        this.emit('blockEnd')
-        break
-    }
-    this.log(`status ${status}`)
-  }
-
-  /**
-   * Start watching media's current time with timeUpdate
+   * Start watching audio's current time with timeUpdate
    */
   watchTime () {
     if (this.tailReached) {
@@ -196,8 +186,13 @@ class Block extends Eventful {
       return
     }
 
+    if (typeof this.timeUpdateId === 'number') {
+      this.log('already watching time')
+      return
+    }
+
     this.timeUpdateId = window.setInterval(
-      () => this.media.getCurrentPosition(this.timeUpdate.bind(this)),
+      () => this.timeUpdate(this.audio.currentTime),
       this.timeUpdateInterval
     )
   }
@@ -206,7 +201,9 @@ class Block extends Eventful {
    * Clear the interval for timeUpdate
    */
   stopWatchingTime () {
+    this.log('stopping watching time')
     window.clearInterval(this.timeUpdateId)
+    this.timeUpdateId = null
   }
 
   /**
@@ -233,7 +230,7 @@ class Block extends Eventful {
       return
     }
 
-    const tailPos = this.media.getDuration() - this.tailOffset
+    const tailPos = this.audio.duration - this.tailOffset
     if (pos >= tailPos) {
       this.tailReached = true
       this.stopWatchingTime()

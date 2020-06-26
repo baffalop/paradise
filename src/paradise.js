@@ -22,6 +22,7 @@ class Paradise extends Eventful {
 
     this.playing = false
     this.active = false
+    this.preloaded = false
     this.skipFirstSlide = true
 
     // for unlocking developer options. See swipeListener()
@@ -36,9 +37,17 @@ class Paradise extends Eventful {
   }
 
   /**
-   * Do any DOM setup not dependent on deviceready, listen for deviceready event
+   * Do any setup not dependent on DOM ready, listen for DOM ready
    */
   listen () {
+    this.initPlayer()
+    document.addEventListener('DOMContentLoaded', this.init.bind(this));
+  }
+
+  /**
+   * Do DOM-dependent setup
+   */
+  init () {
     this.playPauseButton = document.getElementsByClassName('playpause')[0]
     this.swipe = new Swipe(document.getElementById('slider'), {
       draggable: true,
@@ -52,24 +61,6 @@ class Paradise extends Eventful {
         }
       } : null,
     })
-
-    document.addEventListener('deviceready', this.init.bind(this));
-  }
-
-  /**
-   * Do deviceready-dependent setup
-   */
-  init () {
-    window.screen.orientation.lock('portrait')
-      .then(
-      () => this.log('screen locked to portrait'),
-      reason => {
-        this.log('screen lock error...')
-        console.log(reason)
-      }
-    )
-
-    this.initPlayer()
 
     FastClick.attach(document.body)
     this.setupButtons()
@@ -116,6 +107,11 @@ class Paradise extends Eventful {
         this.playPauseButton.classList.add('pause')
         this.timeline.play()
         this.player.play()
+
+        if (!this.preloaded) {
+          this.player.preload()
+          this.preloaded = true
+        }
       } else {
         this.playing = false
         this.playPauseButton.classList.remove('pause')
@@ -202,23 +198,6 @@ class Paradise extends Eventful {
     }
 
     this.unlockedDev = true
-
-    navigator.notification.confirm(
-      `You have enabled developer mode.
-      
-      This allows you to skip to the end of an audio fragment by holding down the skip forward button for 2 seconds (while audio is playing).
-      
-      Would you also like to:`,
-      index => {
-        if (index === 1) {
-          this.resetPlayer()
-        } else if (index === 2) {
-          this.resetPlayer(audioData.fragments.pool.length + 3)
-        }
-      },
-      'Developer Mode',
-      ['Shuffle new playlist', 'Generate full playlist', 'Cancel']
-    )
   }
 
   /**

@@ -32,6 +32,10 @@ class Player extends Eventful {
     this.tailOvershootThreshold = tailOvershootThreshold
   }
 
+  preload () {
+    this.seq.forEach(block => block.preload())
+  }
+
   /**
    * Move next block to play queue and return. Also start subsequent block in advance.
    * If a callback is provided, call with current before starting next.
@@ -44,7 +48,7 @@ class Player extends Eventful {
     const next = this.seq.pop()
     if (next) {
       this.playQueue.push(next)
-      if (!next.media) next.setUpstream(this).start()
+      if (!next.audio) next.setUpstream(this).start()
 
       if (typeof callback === 'function') callback(next)
 
@@ -111,7 +115,6 @@ class Player extends Eventful {
    * @param {function(): void} callback executed when the overlapping block has been stopped and released
    */
   stopOverlap (callback) {
-    this.playQueue[0].stop()
     this.addOneShotEvent('blockEnd', callback, this.playQueue[0])
   }
 
