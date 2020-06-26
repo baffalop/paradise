@@ -23,9 +23,10 @@
 
     methods: {
       /**
-       * @param {HTMLElement} el
+       * @param {HTMLElement|Vue} el
        */
-      goto (el) {
+      goto (node) {
+        const el = node.hasOwnProperty('$el') ? node.$el : node
         el.scrollIntoView({ behavior: 'smooth' })
       },
 

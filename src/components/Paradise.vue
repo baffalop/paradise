@@ -15,7 +15,12 @@
       </div>
     </div>
 
-    <player ref="player" :dev-mode="devMode" @sequence-end="onSequenceEnd()" />
+    <player
+      ref="player"
+      :dev-mode="devMode"
+      @sequence-end="onSequenceEnd"
+      @skip-slide="setSlideStraightToPlayer"
+    />
 
     <div ref="credits">
       <div class="text">
@@ -35,21 +40,27 @@
   import Player from './Player'
 
   const UNLOCK_TIMEOUT = 1500
+  const INITIAL_SLIDE_DELAY = 2000
 
   export default {
     name: 'Paradise',
     components: { SwipeNative, Player },
 
     data: () => ({
+      // dev mode stuff
       unlockCount: 0,
       unlockTimer: null,
       unlockSlides: [],
       devMode: false,
+      // for initial slide transition
+      slideStraightToPlayer: false,
     }),
 
     mounted () {
       this.unlockSlides = [this.$refs.title, this.$refs.description]
-      window.setTimeout(() => this.$refs.swipe.goto(this.$refs.description), 2000)
+
+      const skipTo = this.slideStraightToPlayer ? this.$refs.player : this.$refs.description
+      window.setTimeout(() => this.$refs.swipe.goto(skipTo), INITIAL_SLIDE_DELAY)
     },
 
     computed: {
@@ -105,6 +116,10 @@
           this.unlockCount = 0
         }, UNLOCK_TIMEOUT)
       },
+
+      setSlideStraightToPlayer (value) {
+        this.slideStraightToPlayer = value
+      },
     },
   }
 </script>
@@ -151,7 +166,7 @@
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background: #fa9c8c url(./../assets/img/background.png) no-repeat fixed center center;
+    background: #fa9c8c url(../assets/img/background.png) no-repeat fixed center center;
     background-size: cover;
     font-family: 'GaramondBT', serif, system-ui, -apple-system, -apple-system-font;
     font-size: calc(1.1em + 0.7vw);
@@ -175,13 +190,13 @@
 
   @font-face {
     font-family: 'GaramondBT';
-    src: url(./../assets/fonts/OriginalGaramondBT-Roman.otf);
+    src: url(../assets/fonts/OriginalGaramondBT-Roman.otf);
     font-style: normal;
   }
 
   @font-face {
     font-family: 'GaramondBT';
-    src: url(./../assets/fonts/OriginalGaramondBT-Italic.otf);
+    src: url(../assets/fonts/OriginalGaramondBT-Italic.otf);
     font-style: italic;
   }
 

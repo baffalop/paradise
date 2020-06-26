@@ -1,5 +1,4 @@
-import Player from 'player'
-import BlockBuilder from 'builder'
+import BlockBuilder from './builder'
 
 class Store {
   constructor () {

@@ -1,12 +1,12 @@
-import { audio as audioData } from 'data'
+import { audio as audioData } from './data'
 import Swipe from 'swipejs'
-import Player from 'player'
-import Eventful from 'eventful'
-import Shuffler from 'shuffler'
-import Store from 'store'
-import Titles from 'titles'
+import Player from './player'
+import Eventful from './eventful'
+import Shuffler from './shuffler'
+import Store from './store'
+import Titles from './titles'
 import FastClick from 'fastclick'
-import Timeline from 'timeline'
+import Timeline from './timeline'
 
 /**
  * Top-level class for the app, instantiated once on app launch. Deals with the DOM, and owns the Player.
@@ -282,6 +282,3 @@ class Paradise extends Eventful {
     console.log(`Paradise: ${message}`)
   }
 }
-
-window.paradise = new Paradise()
-paradise.listen()

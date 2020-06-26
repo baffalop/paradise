@@ -1,4 +1,4 @@
-import BlockBuilder from 'builder'
+import BlockBuilder from './builder'
 
 class Shuffler {
   /**

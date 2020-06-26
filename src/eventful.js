@@ -7,6 +7,7 @@
 class Eventful {
   constructor () {
     this.oneShotEvents = {}
+    this.eventHandlers = {}
   }
 
   /**
@@ -20,7 +21,19 @@ class Eventful {
   }
 
   /**
-   * Emit an event to be received by upstream object
+   * Add an event handler, to be used with or instead of `upstream`
+   *
+   * @param {string} type
+   * @param {function} handler
+   * @returns this
+   */
+  on (type, handler) {
+    this.eventHandlers[type] = handler
+    return this
+  }
+
+  /**
+   * Emit an event to be received by upstream object (and/or handled by event handler)
    *
    * @param {String} type
    * @param {Object} data
@@ -28,6 +41,7 @@ class Eventful {
    */
   emit(type, data = {}, emitter = this) {
     if (typeof this.upstream === 'object') this.upstream.receive(type, emitter, data)
+    if (typeof this.eventHandlers[type] === 'function') this.eventHandlers[type](data)
   }
 
   /**

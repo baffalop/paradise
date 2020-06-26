@@ -1,4 +1,4 @@
-import Eventful from 'eventful'
+import Eventful from './eventful'
 
 /**
  * Owns a single Media object, passes events to Player
