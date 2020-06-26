@@ -94,7 +94,7 @@
       updateIndex (blockName) {
         const newIndex = this.playlist.indexOf(blockName)
         if (newIndex === -1) {
-          console.log('WARNING: transitioned to unrecognised block. Not changing index.')
+          console.log(`WARNING: transitioned to unrecognised block '${blockName}'. Not changing index.`)
           return
         }
 
