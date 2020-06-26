@@ -1,5 +1,5 @@
 <template>
-  <div class="swipe">
+  <div @scroll.passive="onScroll" class="swipe">
     <slot />
   </div>
 </template>
@@ -7,6 +7,31 @@
 <script>
   export default {
     name: 'SwipeNative',
+    data: () => ({
+      inView: null,
+      onScrollTimeout: null,
+    }),
+
+    mounted () {
+      console.log(this.$slots.default)
+    },
+
+    methods: {
+      onScroll () {
+        this.onScrollTimeout && window.clearTimeout(this.onScrollTimeout)
+        this.onScrollTimeout = window.setTimeout(this.onScrollEnd.bind(this), 50)
+      },
+
+      onScrollEnd () {
+        this.inView = this.$slots.default.find(this.isInView) || null
+        this.$emit('scroll-end', this.inView)
+      },
+
+      isInView (node) {
+        const boundingRect = node.elm.getBoundingClientRect()
+        return boundingRect.left === 0
+      },
+    },
   }
 </script>
 

@@ -1,10 +1,10 @@
 <template>
-  <swipe-native ref="swipe">
-    <div>
+  <swipe-native ref="swipe" @scroll-end="onScrollEnd">
+    <div ref="title">
       <div class="title"></div>
     </div>
 
-    <div>
+    <div ref="description">
       <div class="text">
         <p>
           This is a guided visit to a series of obliquely connected private libraries located in Amsterdam&rsquo;s Red Light District, the Stroud Green neighbourhood of London, Montreal&rsquo;s Plateau, and the 14e arrondissement of Paris. And other places.
@@ -15,9 +15,9 @@
       </div>
     </div>
 
-    <player :dev-mode="devMode" @sequence-end="onSequenceEnd()" />
+    <player ref="player" :dev-mode="devMode" @sequence-end="onSequenceEnd()" />
 
-    <div>
+    <div ref="credits">
       <div class="text">
         <p>
           <em>I Don&rsquo;t Know Where Paradise Is</em> was written and created by Benny Nemerofsky Ramsay to accompany a series of sculptures, collages, and photographs produced as doctoral research at the Edinburgh College of Art. Narration by Adeniyi Adelakun, Adrian Rifkin, Alberta Whittle, Benny Nemerofsky Ramsay, Gert Hekma, Joke Ballintijn, Mattias Duyves, Oskar Kirk Hansen, Thomas Waugh, Tomi Paasonen, and Will Stringer. Composition and sound design by Johannes Malfatti. App programming by Nikita Gaidakov. Sound recordings by Nikita Gaidakov and Jack Walker. <em>I Don&rsquo;t Know Where Paradise Is</em> was supported through funding by the <em>Cruising the Seventies: Unearthing Pre-HIV/AIDS Queer Sexual Cultures</em> Research Project at the Edinburgh College of Art, the Social Sciences and Humanities Research Council of Canada, and the Canada Council for the Arts.
@@ -35,22 +35,34 @@
   import Player from './Player'
 
   const SLIDE_SPEED_SLOW = 1400
-  const UNLOCK_TIMEOUT = 800
+  const UNLOCK_TIMEOUT = 2000
 
   export default {
     name: 'Paradise',
     components: { SwipeNative, Player },
+
     data: () => ({
       unlockCount: 0,
       unlockTimer: null,
+      unlockTargets: [],
       devMode: false,
     }),
+
+    mounted () {
+      this.unlockTargets = [this.$refs.title, this.$refs.description]
+    },
+
     computed: {
       nextUnlockIndex () {
         return (this.unlockCount + 1) % 2
-      }
+      },
     },
+
     methods: {
+      onScrollEnd (node) {
+        this.checkUnlock(node)
+      },
+
       onSequenceEnd () {
         this.$refs.swipe.goto(3, SLIDE_SPEED_SLOW)
       },
@@ -58,11 +70,16 @@
       /**
        * Swipe alternately between 0th and 1st slide to unlock devMode
        *
-       * @param {Number} index
-       * @param {Number} dir
+       * @param {VNode} node
        */
-      checkUnlock ({index, dir}) {
-        if (index !== this.nextUnlockIndex || -dir !== (this.nextUnlockIndex * 2) - 1) {
+      checkUnlock (node) {
+        const unlockIndex = this.unlockTargets.indexOf(node.elm)
+        if (unlockIndex === -1) {
+          return
+        }
+
+        if (unlockIndex !== this.nextUnlockIndex) {
+          console.log(`unlock index ${unlockIndex} not matched with target ${this.nextUnlockIndex}`)
           return
         }
 
@@ -77,10 +94,12 @@
 
         if (this.unlockTimer) {
           window.clearTimeout(this.unlockTimer)
-          this.unlockTimer = null
         }
 
-        this.unlockTimer = window.setTimeout(() => this.unlockCount = 0, UNLOCK_TIMEOUT)
+        this.unlockTimer = window.setTimeout(() => {
+          console.log('resetting unlockCount')
+          this.unlockCount = 0
+        }, UNLOCK_TIMEOUT)
       },
     },
   }
