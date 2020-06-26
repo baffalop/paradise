@@ -34,9 +34,9 @@ class Block extends Eventful {
   preload () {
     this.start()
 
-    this.play()
+    this.audio.play()
       .then(() => {
-        this.pause()
+        this.audio.pause()
         this.log('preloaded')
       })
       .catch(reason => {
@@ -101,8 +101,11 @@ class Block extends Eventful {
     if (pos < 0) return
 
     this.lastPosition = pos
-    this.emit('timeUpdate', { name: this.src, pos: pos })
     this.audio.pause()
+
+    if (!this.tailReached) {
+      this.emit('timeUpdate', { name: this.src, pos: pos })
+    }
   }
 
   /**
