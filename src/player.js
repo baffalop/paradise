@@ -50,8 +50,6 @@ class Player extends Eventful {
       if (!next.audio) next.setUpstream(this).start()
 
       if (typeof callback === 'function') callback(next)
-
-      this.emit('blockTransition', {name: next.src, remaining: this.seq.length})
     }
 
     if (this.seq.length > 0) this.seq[this.seq.length - 1].setUpstream(this).start()

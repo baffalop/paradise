@@ -3,10 +3,12 @@ import Block from './block'
 class BlockBuilder {
   /**
    * @param {string[]} blockData
+   * @param {number} index
    * @param {number} position
    */
-  constructor (blockData, position = 0) {
-    this.blockData = blockData
+  constructor (blockData, index = 0, position = 0) {
+    this.playlist = blockData
+    this.index = index
     this.position = position
   }
 
@@ -16,7 +18,7 @@ class BlockBuilder {
    * @returns {Block[]}
    */
   build ({dir, tail}) {
-    const blocks = this.blockData.map(
+    const blocks = this.playlist.slice(this.index).map(
       src => new Block(dir, src, tail)
     )
 

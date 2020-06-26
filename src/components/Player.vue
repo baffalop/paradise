@@ -32,6 +32,11 @@
         required: false,
         default: false,
       },
+      playlistLength: {
+        type: Number,
+        required: false,
+        default: audioData.playlistLength,
+      },
     },
 
     data: () => ({
@@ -78,9 +83,23 @@
         if (this.playing) this.player.skipBlock()
       },
 
-      onBlockTransition ({ remaining }) {
-        console.log(`block transition: length: ${this.playlist.length} remaining: ${remaining}`)
-        this.currentIndex = this.playlist.length - remaining
+      onTimeUpdate ({ name, pos }) {
+        this.store.savePosition(pos)
+
+        if (name !== this.playlist[this.currentIndex]) {
+          this.updateIndex(name)
+        }
+      },
+
+      updateIndex (blockName) {
+        const newIndex = this.playlist.indexOf(blockName)
+        if (newIndex === -1) {
+          console.log('WARNING: transitioned to unrecognised block. Not changing index.')
+          return
+        }
+
+        this.currentIndex = newIndex
+        this.store.saveIndex(newIndex)
       },
 
       onSequenceEnd () {
@@ -96,30 +115,28 @@
         this.initPlayer()
       },
 
-      /**
-       * @param {number} playlistLength
-       */
-      initPlayer (playlistLength = null) {
+      initPlayer () {
         let usingRetrievedPlaylist = true
         let playlistBuilder = this.store.retrievePlaylist()
 
         if (playlistBuilder === null) {
           usingRetrievedPlaylist = false
           playlistBuilder = (new Shuffler(audioData.fragments))
-            .shuffle(playlistLength || audioData.playlistLength)
+            .shuffle(this.playlistLength)
         }
 
         const blocks = playlistBuilder.build(audioData.blockOpts)
-
-        this.playlist = playlistBuilder.blockData
         this.player = new Player(blocks, audioData.playerOpts)
         this.initPlayerEvents()
         this.player.cueNext()
 
         console.log('new Player initialised')
 
+        this.playlist = playlistBuilder.playlist
+        this.currentIndex = playlistBuilder.index
+
         if (!usingRetrievedPlaylist) {
-          this.store.savePlaylist(this.player)
+          this.store.savePlaylist(this.playlist)
         }
 
         this.$emit('skip-slide', usingRetrievedPlaylist)
@@ -127,21 +144,13 @@
 
       initPlayerEvents () {
         this.player
-          .on('tail', () => {
-            console.log('tail')
-            this.store.savePlaylist(this.player)
-          })
-          .on('timeUpdate', ({ position }) => {
+          .on('timeUpdate', data => {
             console.log('timeUpdate')
-            this.store.savePosition(position)
+            this.onTimeUpdate(data)
           })
           .on('sequenceEnd', data => {
             console.log('sequenceEnd')
             this.onSequenceEnd(data)
-          })
-          .on('blockTransition', data => {
-            console.log('blockTransition')
-            this.onBlockTransition(data)
           })
       },
     },

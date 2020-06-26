@@ -101,7 +101,7 @@ class Block extends Eventful {
     if (pos < 0) return
 
     this.lastPosition = pos
-    this.emit('timeUpdate', {position: pos})
+    this.emit('timeUpdate', { pos: pos })
     this.audio.pause()
   }
 
@@ -216,7 +216,7 @@ class Block extends Eventful {
 
     if (!this.tailReached && ++this.timeUpdateCount >= this.saveTimeCount) {
       this.timeUpdateCount = 0
-      this.emit('timeUpdate', {position: pos})
+      this.emit('timeUpdate', { name: this.src, pos: pos })
     }
   }
 
@@ -234,7 +234,7 @@ class Block extends Eventful {
     if (pos >= tailPos) {
       this.tailReached = true
       this.stopWatchingTime()
-      this.emit('tail', {overshoot: pos - tailPos})
+      this.emit('tail', { overshoot: pos - tailPos })
     }
   }
 

@@ -1,28 +1,32 @@
 import BlockBuilder from './builder'
 
+const KEY_PREFIX = 'para_'
+const PLAYLIST_KEY = KEY_PREFIX + 'playlist'
+const POSITION_KEY = KEY_PREFIX + 'position'
+const INDEX_KEY = KEY_PREFIX + 'index'
+
 class Store {
   constructor () {
     this.storage = window.localStorage
   }
 
   /**
-   * @param {Player} player
+   * @param {string[]} playlist
+   * @param {number} index
+   * @param {number} pos
    */
-  savePlaylist (player) {
-    const playlist = player.getPlaylist().filter(block => !block.tailReached)
-
+  savePlaylist (playlist, index = 0, pos = 0) {
     if (playlist.length === 0) {
       this.log('No savable state. Clearing storage.')
       this.clearPlaylist()
       return
     }
 
-    this.savePosition(playlist[0].getLastPosition())
+    this.savePosition(pos)
+    this.saveIndex(index)
+    this.storage.setItem(PLAYLIST_KEY, JSON.stringify(playlist))
 
-    const savedPlaylist = playlist.map(block => block.getBlockParams().src)
-    this.storage.setItem('playlist', JSON.stringify(savedPlaylist))
-
-    this.log(`saved playlist [${this.seqToString(savedPlaylist)}]`)
+    this.log(`saved playlist [${this.seqToString(playlist)}]`)
   }
 
   /**
@@ -43,18 +47,37 @@ class Store {
       return
     }
 
-    this.storage.setItem('position', position.toString())
+    this.storage.setItem(POSITION_KEY, position.toString())
     this.log(`saved position: ${position}`)
   }
 
+  /**
+   * @param {Number} index
+   */
+  saveIndex (index) {
+    if (index < 0) {
+      this.log('not saving negative index')
+      return
+    }
+
+    this.storage.setItem(INDEX_KEY, index.toString())
+    this.log(`saved position: ${index}`)
+  }
+
   clearPosition () {
-    this.storage.removeItem('position')
+    this.storage.removeItem(POSITION_KEY)
     this.log('cleared position')
   }
 
+  clearIndex () {
+    this.storage.removeItem(INDEX_KEY)
+    this.log('cleared index')
+  }
+
   clearPlaylist () {
-    this.storage.removeItem('playlist')
-    this.storage.removeItem('position')
+    this.storage.removeItem(PLAYLIST_KEY)
+    this.storage.removeItem(POSITION_KEY)
+    this.storage.removeItem(INDEX_KEY)
     this.log('cleared playlist')
   }
 
@@ -65,7 +88,7 @@ class Store {
    * @returns {BlockBuilder}
    */
   retrievePlaylist () {
-    const playlistData = this.storage.getItem('playlist')
+    const playlistData = this.storage.getItem(PLAYLIST_KEY)
     if (playlistData === null || playlistData === '') {
       this.log('No stored data found')
       return null
@@ -87,19 +110,29 @@ class Store {
     }
 
     const position = this.retrievePosition()
+    const index = this.retrieveIndex()
 
-    this.log(`retrieved playlist [${this.seqToString(playlist)}]: position ${position}`)
+    this.log(`retrieved playlist [${this.seqToString(playlist)}]: index ${index}, position ${position}`)
 
-    return new BlockBuilder(playlist, position)
+    return new BlockBuilder(playlist, index, position)
   }
 
   /**
    * @returns {number}
    */
   retrievePosition () {
-    const position = this.storage.getItem('position')
+    const position = this.storage.getItem(POSITION_KEY)
     if (position === null || position === '') return 0
     return parseFloat(position)
+  }
+
+  /**
+   * @returns {number}
+   */
+  retrieveIndex () {
+    const index = this.storage.getItem(INDEX_KEY)
+    if (index === null || index === '') return 0
+    return parseInt(index)
   }
 
   /**
