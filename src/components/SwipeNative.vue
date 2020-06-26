@@ -22,6 +22,13 @@
     },
 
     methods: {
+      /**
+       * @param {HTMLElement} el
+       */
+      goto (el) {
+        el.scrollIntoView({ behavior: 'smooth' })
+      },
+
       onScroll () {
         if (this.onScrollTimeout) {
           window.clearTimeout(this.onScrollTimeout)

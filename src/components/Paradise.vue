@@ -34,7 +34,6 @@
   import SwipeNative from './SwipeNative'
   import Player from './Player'
 
-  const SLIDE_SPEED_SLOW = 1400
   const UNLOCK_TIMEOUT = 1500
 
   export default {
@@ -50,6 +49,7 @@
 
     mounted () {
       this.unlockSlides = [this.$refs.title, this.$refs.description]
+      window.setTimeout(() => this.$refs.swipe.goto(this.$refs.description), 2000)
     },
 
     computed: {
@@ -65,7 +65,7 @@
       },
 
       onSequenceEnd () {
-        this.$refs.swipe.goto(3, SLIDE_SPEED_SLOW)
+        this.$refs.swipe.goto(this.$refs.credits)
       },
 
       /**
