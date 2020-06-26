@@ -59,59 +59,63 @@
 
   /* Titles */
 
+  .urinal {
+    background-image: url(../assets/img/fragments/urinal.png);
+  }
+
   .bathhouse {
-    background-image: url(./../assets/img/fragments/bathhouse.png);
+    background-image: url(../assets/img/fragments/bathhouse.png);
   }
 
   .biographies {
-      background-image: url(./../assets/img/fragments/biographies.png);
+      background-image: url(../assets/img/fragments/biographies.png);
   }
 
   .clocks {
-      background-image: url(./../assets/img/fragments/clocks.png);
+      background-image: url(../assets/img/fragments/clocks.png);
   }
 
   .duster {
-      background-image: url(./../assets/img/fragments/duster.png);
+      background-image: url(../assets/img/fragments/duster.png);
   }
 
   .exlibris {
-    background-image: url(./../assets/img/fragments/exlibris.png);
+    background-image: url(../assets/img/fragments/exlibris.png);
   }
 
   .faggot {
-      background-image: url(./../assets/img/fragments/faggot.png);
+      background-image: url(../assets/img/fragments/faggot.png);
   }
 
   .ficus {
-    background-image: url(./../assets/img/fragments/ficus.png);
+    background-image: url(../assets/img/fragments/ficus.png);
   }
 
   .futurelovers {
-      background-image: url(./../assets/img/fragments/futurelovers.png);
+      background-image: url(../assets/img/fragments/futurelovers.png);
   }
 
   .illustration {
-      background-image: url(./../assets/img/fragments/illustration.png);
+      background-image: url(../assets/img/fragments/illustration.png);
   }
 
   .intro {
-    background-image: url(./../assets/img/fragments/intro.png);
+    background-image: url(../assets/img/fragments/intro.png);
   }
 
   .mirror {
-    background-image: url(./../assets/img/fragments/mirror.png);
+    background-image: url(../assets/img/fragments/mirror.png);
   }
 
   .novels {
-    background-image: url(./../assets/img/fragments/novels.png);
+    background-image: url(../assets/img/fragments/novels.png);
   }
 
   .postcard {
-    background-image: url(./../assets/img/fragments/postcard.png);
+    background-image: url(../assets/img/fragments/postcard.png);
   }
 
   .spiderplant {
-      background-image: url(./../assets/img/fragments/spiderplant.png);
+      background-image: url(../assets/img/fragments/spiderplant.png);
   }
 </style>
