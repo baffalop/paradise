@@ -144,14 +144,8 @@
 
       initPlayerEvents () {
         this.player
-          .on('timeUpdate', data => {
-            console.log('timeUpdate')
-            this.onTimeUpdate(data)
-          })
-          .on('sequenceEnd', data => {
-            console.log('sequenceEnd')
-            this.onSequenceEnd(data)
-          })
+          .on('timeUpdate', this.onTimeUpdate.bind(this))
+          .on('sequenceEnd', this.onSequenceEnd.bind(this))
       },
     },
   }
