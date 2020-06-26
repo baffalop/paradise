@@ -62,11 +62,6 @@ class Player extends Eventful {
   }
 
   pause () {
-    if (this.isOverlapping()) {
-      this.stopOverlap(this.pause.bind(this))
-      return
-    }
-
     this.playQueue.map(block => block.pause())
   }
 
@@ -79,21 +74,11 @@ class Player extends Eventful {
       return
     }
 
-    if (this.isOverlapping()) {
-      this.stopOverlap(() => this.skip(mul))
-      return
-    }
-
     this.playQueue.map(block => block.skip(this.skipTime * mul))
   }
 
   skipBlock () {
-    if (this.isOverlapping()) {
-      this.stopOverlap(this.playQueue[0].skipToTheEnd())
-      return
-    }
-
-    this.playQueue[0].skipToTheEnd()
+    this.playQueue.find(block => !block.tailReached).skipToTheEnd()
   }
 
   /**
@@ -103,16 +88,6 @@ class Player extends Eventful {
    */
   isOverlapping () {
     return this.playQueue.length > 1
-  }
-
-  /**
-   * For any actions performed while two blocks are playing, we first need to stop the previous block.
-   * Otherwise, we run into a media plugin bug that throws an exception when interacting with multiple playing media.
-   *
-   * @param {function(): void} callback executed when the overlapping block has been stopped and released
-   */
-  stopOverlap (callback) {
-    this.addOneShotEvent('blockEnd', callback, this.playQueue[0])
   }
 
   /**
