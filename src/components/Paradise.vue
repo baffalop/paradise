@@ -1,5 +1,5 @@
 <template>
-  <swipe-native ref="swipe" @scroll-end="onScrollEnd">
+  <swipe-native ref="swipe" @transition="onSlideTransition">
     <div ref="title">
       <div class="title"></div>
     </div>
@@ -35,7 +35,7 @@
   import Player from './Player'
 
   const SLIDE_SPEED_SLOW = 1400
-  const UNLOCK_TIMEOUT = 2000
+  const UNLOCK_TIMEOUT = 1500
 
   export default {
     name: 'Paradise',
@@ -44,12 +44,12 @@
     data: () => ({
       unlockCount: 0,
       unlockTimer: null,
-      unlockTargets: [],
+      unlockSlides: [],
       devMode: false,
     }),
 
     mounted () {
-      this.unlockTargets = [this.$refs.title, this.$refs.description]
+      this.unlockSlides = [this.$refs.title, this.$refs.description]
     },
 
     computed: {
@@ -59,7 +59,8 @@
     },
 
     methods: {
-      onScrollEnd (node) {
+      onSlideTransition (node) {
+        console.log(`swipe transition: ${node.data.ref}`)
         this.checkUnlock(node)
       },
 
@@ -73,7 +74,7 @@
        * @param {VNode} node
        */
       checkUnlock (node) {
-        const unlockIndex = this.unlockTargets.indexOf(node.elm)
+        const unlockIndex = this.unlockSlides.indexOf(node.elm)
         if (unlockIndex === -1) {
           return
         }
